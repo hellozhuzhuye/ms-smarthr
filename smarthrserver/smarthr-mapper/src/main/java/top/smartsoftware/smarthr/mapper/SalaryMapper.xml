@@ -2,20 +2,20 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="top.smartsoftware.smarthr.mapper.SalaryMapper" >
   <resultMap id="BaseResultMap" type="top.smartsoftware.smarthr.model.Salary" >
-    <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="basicSalary" property="basicsalary" jdbcType="INTEGER" />
-    <result column="bonus" property="bonus" jdbcType="INTEGER" />
-    <result column="lunchSalary" property="lunchsalary" jdbcType="INTEGER" />
-    <result column="trafficSalary" property="trafficsalary" jdbcType="INTEGER" />
-    <result column="allSalary" property="allsalary" jdbcType="INTEGER" />
-    <result column="pensionBase" property="pensionbase" jdbcType="INTEGER" />
-    <result column="pensionPer" property="pensionper" jdbcType="REAL" />
-    <result column="createDate" property="createdate" jdbcType="TIMESTAMP" />
-    <result column="medicalBase" property="medicalbase" jdbcType="INTEGER" />
-    <result column="medicalPer" property="medicalper" jdbcType="REAL" />
-    <result column="accumulationFundBase" property="accumulationfundbase" jdbcType="INTEGER" />
-    <result column="accumulationFundPer" property="accumulationfundper" jdbcType="REAL" />
-    <result column="name" property="name" jdbcType="VARCHAR" />
+    <id column="id" property="id" jdbcType="INTEGER"/>
+    <result column="basicSalary" property="basicSalary" jdbcType="INTEGER"/>
+    <result column="bonus" property="bonus" jdbcType="INTEGER"/>
+    <result column="lunchSalary" property="lunchSalary" jdbcType="INTEGER"/>
+    <result column="trafficSalary" property="trafficSalary" jdbcType="INTEGER"/>
+    <result column="allSalary" property="allSalary" jdbcType="INTEGER"/>
+    <result column="pensionBase" property="pensionBase" jdbcType="INTEGER"/>
+    <result column="pensionPer" property="pensionPer" jdbcType="REAL"/>
+    <result column="createDate" property="createDate" jdbcType="TIMESTAMP"/>
+    <result column="medicalBase" property="medicalBase" jdbcType="INTEGER"/>
+    <result column="medicalPer" property="medicalPer" jdbcType="REAL"/>
+    <result column="accumulationFundBase" property="accumulationFundBase" jdbcType="INTEGER"/>
+    <result column="accumulationFundPer" property="accumulationFundPer" jdbcType="REAL"/>
+    <result column="name" property="name" jdbcType="VARCHAR"/>
   </resultMap>
   <sql id="Base_Column_List" >
     id, basicSalary, bonus, lunchSalary, trafficSalary, allSalary, pensionBase, pensionPer, 
@@ -26,6 +26,11 @@
     <include refid="Base_Column_List" />
     from salary
     where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="getAllSalaries" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from salary
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from salary

@@ -1,5 +1,7 @@
 package top.smartsoftware.smarthr.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.util.Date;
 
 public class Salary {
@@ -19,6 +21,7 @@ public class Salary {
 
     private Float pensionPer;
 
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date createDate;
 
     private Integer medicalBase;

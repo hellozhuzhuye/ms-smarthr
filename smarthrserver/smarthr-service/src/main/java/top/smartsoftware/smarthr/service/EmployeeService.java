@@ -1,11 +1,15 @@
-package top.smartsoftware.smarthr.Service;
+package top.smartsoftware.smarthr.service;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.amqp.rabbit.connection.CorrelationData;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import top.smartsoftware.smarthr.mapper.EmployeeMapper;
 import top.smartsoftware.smarthr.model.Employee;
+import top.smartsoftware.smarthr.model.MailConstants;
+import top.smartsoftware.smarthr.model.MailSendLog;
 import top.smartsoftware.smarthr.model.RespPageBean;
 
 import java.text.DecimalFormat;
@@ -23,10 +27,10 @@ import java.util.UUID;
 public class EmployeeService {
     @Autowired
     EmployeeMapper employeeMapper;
-//    @Autowired
-//    RabbitTemplate rabbitTemplate;
-//    @Autowired
-//    MailSendLogService mailSendLogService;
+    @Autowired
+    RabbitTemplate rabbitTemplate;
+    @Autowired
+    MailSendLogService mailSendLogService;
     public final static Logger logger = LoggerFactory.getLogger(EmployeeService.class);
     SimpleDateFormat yearFormat = new SimpleDateFormat("yyyy");
     SimpleDateFormat monthFormat = new SimpleDateFormat("MM");
@@ -44,28 +48,28 @@ public class EmployeeService {
         return bean;
     }
 
-//    public Integer addEmp(Employee employee) {
-//        Date beginContract = employee.getBeginContract();
-//        Date endContract = employee.getEndContract();
-//        double month = (Double.parseDouble(yearFormat.format(endContract)) - Double.parseDouble(yearFormat.format(beginContract))) * 12 + (Double.parseDouble(monthFormat.format(endContract)) - Double.parseDouble(monthFormat.format(beginContract)));
-//        employee.setContractTerm(Double.parseDouble(decimalFormat.format(month / 12)));
-//        int result = employeeMapper.insertSelective(employee);
-//        if (result == 1) {
-//            Employee emp = employeeMapper.getEmployeeById(employee.getId());
-//            //生成消息的唯一id
-//            String msgId = UUID.randomUUID().toString();
-//            MailSendLog mailSendLog = new MailSendLog();
-//            mailSendLog.setMsgId(msgId);
-//            mailSendLog.setCreateTime(new Date());
-//            mailSendLog.setExchange(MailConstants.MAIL_EXCHANGE_NAME);
-//            mailSendLog.setRouteKey(MailConstants.MAIL_ROUTING_KEY_NAME);
-//            mailSendLog.setEmpId(emp.getId());
-//            mailSendLog.setTryTime(new Date(System.currentTimeMillis() + 1000 * 60 * MailConstants.MSG_TIMEOUT));
-//            mailSendLogService.insert(mailSendLog);
-//            rabbitTemplate.convertAndSend(MailConstants.MAIL_EXCHANGE_NAME, MailConstants.MAIL_ROUTING_KEY_NAME, emp, new CorrelationData(msgId));
-//        }
-//        return result;
-//    }
+    public Integer addEmp(Employee employee) {
+        Date beginContract = employee.getBeginContract();
+        Date endContract = employee.getEndContract();
+        double month = (Double.parseDouble(yearFormat.format(endContract)) - Double.parseDouble(yearFormat.format(beginContract))) * 12 + (Double.parseDouble(monthFormat.format(endContract)) - Double.parseDouble(monthFormat.format(beginContract)));
+        employee.setContractTerm(Double.parseDouble(decimalFormat.format(month / 12)));
+        int result = employeeMapper.insertSelective(employee);
+        if (result == 1) {
+            Employee emp = employeeMapper.getEmployeeById(employee.getId());
+            //生成消息的唯一id
+            String msgId = UUID.randomUUID().toString();
+            MailSendLog mailSendLog = new MailSendLog();
+            mailSendLog.setMsgId(msgId);
+            mailSendLog.setCreateTime(new Date());
+            mailSendLog.setExchange(MailConstants.MAIL_EXCHANGE_NAME);
+            mailSendLog.setRouteKey(MailConstants.MAIL_ROUTING_KEY_NAME);
+            mailSendLog.setEmpId(emp.getId());
+            mailSendLog.setTryTime(new Date(System.currentTimeMillis() + 1000 * 60 * MailConstants.MSG_TIMEOUT));
+            mailSendLogService.insert(mailSendLog);
+            rabbitTemplate.convertAndSend(MailConstants.MAIL_EXCHANGE_NAME, MailConstants.MAIL_ROUTING_KEY_NAME, emp, new CorrelationData(msgId));
+        }
+        return result;
+    }
 
     public Integer maxWorkID() {
         return employeeMapper.maxWorkID();

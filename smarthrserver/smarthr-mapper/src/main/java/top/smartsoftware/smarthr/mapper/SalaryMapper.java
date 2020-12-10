@@ -2,6 +2,8 @@ package top.smartsoftware.smarthr.mapper;
 
 import top.smartsoftware.smarthr.model.Salary;
 
+import java.util.List;
+
 public interface SalaryMapper {
     int deleteByPrimaryKey(Integer id);
 
@@ -14,4 +16,6 @@ public interface SalaryMapper {
     int updateByPrimaryKeySelective(Salary record);
 
     int updateByPrimaryKey(Salary record);
+
+    List<Salary> getAllSalaries();
 }
