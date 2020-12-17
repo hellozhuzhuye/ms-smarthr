@@ -22,10 +22,8 @@ import java.util.List;
 
 @Service
 public class HrService implements UserDetailsService {
-
     @Autowired
     HrMapper hrMapper;
-
     @Autowired
     HrRoleMapper hrRoleMapper;
 
@@ -33,14 +31,14 @@ public class HrService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Hr hr = hrMapper.loadUserByUsername(username);
         if (hr == null) {
-            throw new UsernameNotFoundException("用户名不存在");
+            throw new UsernameNotFoundException("用户名不存在!");
         }
         hr.setRoles(hrMapper.getHrRolesById(hr.getId()));
         return hr;
     }
 
     public List<Hr> getAllHrs(String keywords) {
-        return hrMapper.getAllHrs(HrUtils.getCurrentHr().getId(), keywords);
+        return hrMapper.getAllHrs(HrUtils.getCurrentHr().getId(),keywords);
     }
 
     public Integer updateHr(Hr hr) {
@@ -57,28 +55,28 @@ public class HrService implements UserDetailsService {
         return hrMapper.deleteByPrimaryKey(id);
     }
 
-//    public List<Hr> getAllHrsExceptCurrentHr() {
-//        return hrMapper.getAllHrsExceptCurrentHr(HrUtils.getCurrentHr().getId());
-//    }
-//
-//    public Integer updateHyById(Hr hr) {
-//        return hrMapper.updateByPrimaryKeySelective(hr);
-//    }
-//
-//    public boolean updateHrPasswd(String oldpass, String pass, Integer hrid) {
-//        Hr hr = hrMapper.selectByPrimaryKey(hrid);
-//        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-//        if (encoder.matches(oldpass, hr.getPassword())) {
-//            String encodePass = encoder.encode(pass);
-//            Integer result = hrMapper.updatePasswd(hrid, encodePass);
-//            if (result == 1) {
-//                return true;
-//            }
-//        }
-//        return false;
-//    }
-//
-//    public Integer updateUserface(String url, Integer id) {
-//        return hrMapper.updateUserface(url, id);
-//    }
+    public List<Hr> getAllHrsExceptCurrentHr() {
+        return hrMapper.getAllHrsExceptCurrentHr(HrUtils.getCurrentHr().getId());
+    }
+
+    public Integer updateHyById(Hr hr) {
+        return hrMapper.updateByPrimaryKeySelective(hr);
+    }
+
+    public boolean updateHrPasswd(String oldpass, String pass, Integer hrid) {
+        Hr hr = hrMapper.selectByPrimaryKey(hrid);
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        if (encoder.matches(oldpass, hr.getPassword())) {
+            String encodePass = encoder.encode(pass);
+            Integer result = hrMapper.updatePasswd(hrid, encodePass);
+            if (result == 1) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public Integer updateUserface(String url, Integer id) {
+        return hrMapper.updateUserface(url, id);
+    }
 }

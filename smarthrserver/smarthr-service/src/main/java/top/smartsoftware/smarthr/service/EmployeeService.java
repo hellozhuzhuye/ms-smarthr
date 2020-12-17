@@ -6,6 +6,7 @@ import org.springframework.amqp.rabbit.connection.CorrelationData;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import top.smartsoftware.smarthr.mapper.EmpSalaryMapper;
 import top.smartsoftware.smarthr.mapper.EmployeeMapper;
 import top.smartsoftware.smarthr.model.Employee;
 import top.smartsoftware.smarthr.model.MailConstants;
@@ -29,6 +30,8 @@ public class EmployeeService {
     EmployeeMapper employeeMapper;
     @Autowired
     RabbitTemplate rabbitTemplate;
+    @Autowired
+    EmpSalaryMapper empSalaryMapper;
     @Autowired
     MailSendLogService mailSendLogService;
     public final static Logger logger = LoggerFactory.getLogger(EmployeeService.class);
@@ -76,6 +79,7 @@ public class EmployeeService {
     }
 
     public Integer deleteEmpByEid(Integer id) {
+        empSalaryMapper.deleteByEmpId(id);
         return employeeMapper.deleteByPrimaryKey(id);
     }
 

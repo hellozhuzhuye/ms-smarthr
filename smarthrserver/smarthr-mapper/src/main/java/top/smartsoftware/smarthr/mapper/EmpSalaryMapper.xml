@@ -19,6 +19,10 @@
     delete from empsalary
     where id = #{id,jdbcType=INTEGER}
   </delete>
+  <delete id="deleteByEmpId" parameterType="java.lang.Integer" >
+    delete from empsalary
+    where eid = #{empId}
+  </delete>
   <insert id="insert" parameterType="top.smartsoftware.smarthr.model.EmpSalary" >
     insert into empsalary (id, eid, sid)
     values (#{id,jdbcType=INTEGER}, #{eid,jdbcType=INTEGER}, #{sid,jdbcType=INTEGER})
