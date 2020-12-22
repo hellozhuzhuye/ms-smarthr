@@ -4,8 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import top.smartsoftware.smarthr.Service.*;
 import top.smartsoftware.smarthr.model.*;
+import top.smartsoftware.smarthr.service.*;
 import top.smartsoftware.smarthr.utils.POIUtils;
 
 import java.io.IOException;
@@ -38,13 +38,13 @@ public class EmpBasicController {
         return employeeService.getEmployeeByPage(page, size, employee,beginDateScope);
     }
 
-//    @PostMapping("/")
-//    public RespBean addEmp(@RequestBody Employee employee) {
-//        if (employeeService.addEmp(employee) == 1) {
-//            return RespBean.ok("添加成功!");
-//        }
-//        return RespBean.error("添加失败!");
-//    }
+    @PostMapping("/")
+    public RespBean addEmp(@RequestBody Employee employee) {
+        if (employeeService.addEmp(employee) == 1) {
+            return RespBean.ok("添加成功!");
+        }
+        return RespBean.error("添加失败!");
+    }
 
     @DeleteMapping("/{id}")
     public RespBean deleteEmpByEid(@PathVariable Integer id) {

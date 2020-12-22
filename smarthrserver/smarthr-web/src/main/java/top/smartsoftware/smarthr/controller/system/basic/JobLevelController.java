@@ -2,7 +2,7 @@ package top.smartsoftware.smarthr.controller.system.basic;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import top.smartsoftware.smarthr.Service.JobLevelService;
+import top.smartsoftware.smarthr.service.JobLevelService;
 import top.smartsoftware.smarthr.model.JobLevel;
 import top.smartsoftware.smarthr.model.RespBean;
 

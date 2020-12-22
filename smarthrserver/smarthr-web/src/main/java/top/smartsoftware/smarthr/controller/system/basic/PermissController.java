@@ -2,8 +2,8 @@ package top.smartsoftware.smarthr.controller.system.basic;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import top.smartsoftware.smarthr.Service.MenuService;
-import top.smartsoftware.smarthr.Service.RoleService;
+import top.smartsoftware.smarthr.service.MenuService;
+import top.smartsoftware.smarthr.service.RoleService;
 import top.smartsoftware.smarthr.model.Menu;
 import top.smartsoftware.smarthr.model.RespBean;
 import top.smartsoftware.smarthr.model.Role;

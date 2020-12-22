@@ -2,7 +2,7 @@ package top.smartsoftware.smarthr.controller.system.basic;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import top.smartsoftware.smarthr.Service.DepartmentService;
+import top.smartsoftware.smarthr.service.DepartmentService;
 import top.smartsoftware.smarthr.model.Department;
 import top.smartsoftware.smarthr.model.RespBean;
 

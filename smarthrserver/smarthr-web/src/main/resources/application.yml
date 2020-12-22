@@ -1,0 +1,40 @@
+spring:
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    username: root
+    password: 74110asd123.
+    url: jdbc:mysql://47.112.105.123:3306/vhr?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+  rabbitmq:
+    username: guest
+    password: guest
+    host: 47.112.105.123
+    publisher-returns: true
+    publisher-confirms: true
+  redis:
+    host: 47.112.105.123
+    database: 0
+    port: 6379
+    password:
+  cache:
+    cache-names: menus_cache
+server:
+  port: 8081
+  compression:
+    enabled: true
+fastdfs:
+  nginx:
+    host: http://192.168.91.128/
+
+aliyun:
+  oss:
+    endpoint: oss.smartsoftware.top # oss对外服务的访问域名
+    accessKeyId: LTAI4GC3GWTFECczVmxmb1aA # 访问身份验证中用到用户标识
+    accessKeySecret: NkYLqwYScPJrnJ7IPFHX5MEeVHvfgi # 用户用于加密签名字符串和oss用来验证签名字符串的密钥
+    bucketName: 826076402 # oss的存储空间
+    policy:
+      expire: 300 # 签名有效期(S)
+    maxSize: 500 # 上传文件大小(M)
+    callback: http://hr.smartsoftware.top/aliyun/oss/callback # 文件上传成功后的回调地址
+    dir:
+      prefix:   # 上传文件夹路径前缀
+

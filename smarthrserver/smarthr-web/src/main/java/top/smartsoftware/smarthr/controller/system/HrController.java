@@ -2,8 +2,8 @@ package top.smartsoftware.smarthr.controller.system;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import top.smartsoftware.smarthr.Service.HrService;
-import top.smartsoftware.smarthr.Service.RoleService;
+import top.smartsoftware.smarthr.service.HrService;
+import top.smartsoftware.smarthr.service.RoleService;
 import top.smartsoftware.smarthr.model.Hr;
 import top.smartsoftware.smarthr.model.RespBean;
 import top.smartsoftware.smarthr.model.Role;
@@ -34,7 +34,6 @@ public class HrController {
         }
         return RespBean.error("更新失败!");
     }
-
     @GetMapping("/roles")
     public List<Role> getAllRoles() {
         return roleService.getAllRoles();
@@ -56,3 +55,4 @@ public class HrController {
         return RespBean.error("删除失败!");
     }
 }
+

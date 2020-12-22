@@ -7,7 +7,7 @@ import org.springframework.security.web.FilterInvocation;
 import org.springframework.security.web.access.intercept.FilterInvocationSecurityMetadataSource;
 import org.springframework.stereotype.Component;
 import org.springframework.util.AntPathMatcher;
-import top.smartsoftware.smarthr.Service.MenuService;
+import top.smartsoftware.smarthr.service.MenuService;
 import top.smartsoftware.smarthr.model.Menu;
 import top.smartsoftware.smarthr.model.Role;
 
