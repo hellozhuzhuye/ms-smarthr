@@ -14,6 +14,10 @@ public class RespBean {
         return new RespBean();
     }
 
+    public static RespBean ok() {
+        return new RespBean(200, null, null);
+    }
+
     public static RespBean ok(String msg) {
         return new RespBean(200, msg, null);
     }

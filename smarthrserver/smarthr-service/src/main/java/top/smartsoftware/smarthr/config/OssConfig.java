@@ -12,6 +12,9 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 public class OssConfig {
+    @Value("${aliyun.oss.shenzhenEndpoint}")
+    private String ALIYUN_SZ_OSS_ENDPOINT;
+
     @Value("${aliyun.oss.endpoint}")
     private String ALIYUN_OSS_ENDPOINT;
 
@@ -66,6 +69,10 @@ public class OssConfig {
 
     public String getALIYUN_OSS_DIR_PREFIX() {
         return ALIYUN_OSS_DIR_PREFIX;
+    }
+
+    public String getALIYUN_SZ_OSS_ENDPOINT() {
+        return ALIYUN_SZ_OSS_ENDPOINT;
     }
 
     @Bean

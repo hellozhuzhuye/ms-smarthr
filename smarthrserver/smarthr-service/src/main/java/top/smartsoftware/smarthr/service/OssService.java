@@ -26,6 +26,7 @@ import top.smartsoftware.smarthr.utils.ToolDateTime;
 
 import javax.servlet.http.HttpServletRequest;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.text.DecimalFormat;
@@ -51,8 +52,11 @@ public class OssService {
     public OssPolicyResult policy(String dir) {
         OssPolicyResult result = new OssPolicyResult();
         // 存储目录
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+        //SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
         //String dir = ossConfig.getALIYUN_OSS_DIR_PREFIX() + sdf.format(new Date());
+        if (dir.endsWith("/")) {
+            dir = dir.substring(0, dir.length() - 1);
+        }
         // 签名有效期
         long expireEndTime = System.currentTimeMillis() + ossConfig.getALIYUN_OSS_EXPIRE() * 1000;
         Date expiration = new Date(expireEndTime);
@@ -64,11 +68,11 @@ public class OssService {
         callback.setCallbackBody("filename=${object}&size=${size}&mimeType=${mimeType}&height=${imageInfo.height}&width=${imageInfo.width}");
         callback.setCallbackBodyType("application/x-www-form-urlencoded");
         // 提交节点
-        String action = "http://" + ossConfig.getALIYUN_OSS_BUCKET_NAME() + "." + ossConfig.getALIYUN_OSS_ENDPOINT();
+        String action = "http://"+ossConfig.getALIYUN_OSS_BUCKET_NAME()+"."+ossConfig.getALIYUN_SZ_OSS_ENDPOINT();
         try {
             PolicyConditions policyConds = new PolicyConditions();
             policyConds.addConditionItem(PolicyConditions.COND_CONTENT_LENGTH_RANGE, 0, maxSize);
-            policyConds.addConditionItem(MatchMode.StartWith, PolicyConditions.COND_KEY, dir);
+            policyConds.addConditionItem(MatchMode.StartWith,PolicyConditions.COND_KEY, dir);
             String postPolicy = ossClient.generatePostPolicy(expiration, policyConds);
             byte[] binaryData = postPolicy.getBytes("utf-8");
             String policy = BinaryUtil.toBase64String(binaryData);
@@ -206,6 +210,15 @@ public class OssService {
         if (result != null) {
             ossClient.deleteObject(ossConfig.getALIYUN_OSS_BUCKET_NAME(), sourceObjectName);
         }
+    }
+
+    public void newFolder(String newFolderName) {
+        if (!newFolderName.endsWith("/")){
+            newFolderName+="/";
+        }
+        String content = "Hello OSS";
+        PutObjectRequest putObjectRequest = new PutObjectRequest(ossConfig.getALIYUN_OSS_BUCKET_NAME(), newFolderName, new ByteArrayInputStream(content.getBytes()));
+        ossClient.putObject(putObjectRequest);
     }
 }
 

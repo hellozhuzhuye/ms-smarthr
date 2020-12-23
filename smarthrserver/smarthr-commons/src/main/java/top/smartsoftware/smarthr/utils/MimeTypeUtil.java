@@ -23,7 +23,7 @@ public class MimeTypeUtil {
             iconCode = 1;
         } else if (mimeType.equals("text/xml")) {
             iconCode = 2;
-        } else if (mimeType.equals("text/javascript")) {
+        } else if (mimeType.contains("javascript")) {
             iconCode = 3;
         } else if (mimeType.equals("text/html")) {
             iconCode = 4;
@@ -49,8 +49,8 @@ public class MimeTypeUtil {
             iconCode = 63;
         } else if (mimeType.equals("application/pdf")) {
             iconCode = 64;
-        } else if (mimeType.equals("application/zip")
-                || mimeType.equals("application/x-rar")) {
+        } else if (mimeType.contains("zip")
+                || mimeType.contains("rar")) {
             iconCode = 65;
         } else if (mimeType.equals("application/octet-stream")
                 || mimeType.equals("application/x-msdownload")) {
@@ -62,6 +62,11 @@ public class MimeTypeUtil {
     }
 
     public static String getContentTypeBySuffix(String fileName) throws IOException {
+        if (fileName.endsWith(".rar")){
+            return "rar";
+        } else if (fileName.endsWith(".js")) {
+            return "javascript";
+        }
         File file = new File(fileName);
         String result = Files.probeContentType(Paths.get(file.toURI()));
         return result;
