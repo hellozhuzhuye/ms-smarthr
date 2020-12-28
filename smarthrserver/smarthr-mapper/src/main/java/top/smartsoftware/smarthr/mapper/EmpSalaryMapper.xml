@@ -12,23 +12,23 @@
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
-    from empsalary
+    from employee_salary
     where id = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
-    delete from empsalary
+    delete from employee_salary
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <delete id="deleteByEmpId" parameterType="java.lang.Integer" >
-    delete from empsalary
+    delete from employee_salary
     where eid = #{empId}
   </delete>
   <insert id="insert" parameterType="top.smartsoftware.smarthr.model.EmpSalary" >
-    insert into empsalary (id, eid, sid)
+    insert into employee_salary (id, eid, sid)
     values (#{id,jdbcType=INTEGER}, #{eid,jdbcType=INTEGER}, #{sid,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="top.smartsoftware.smarthr.model.EmpSalary" >
-    insert into empsalary
+    insert into employee_salary
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
         id,
@@ -53,7 +53,7 @@
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="top.smartsoftware.smarthr.model.EmpSalary" >
-    update empsalary
+    update employee_salary
     <set >
       <if test="eid != null" >
         eid = #{eid,jdbcType=INTEGER},
@@ -65,7 +65,7 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="top.smartsoftware.smarthr.model.EmpSalary" >
-    update empsalary
+    update employee_salary
     set eid = #{eid,jdbcType=INTEGER},
       sid = #{sid,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}

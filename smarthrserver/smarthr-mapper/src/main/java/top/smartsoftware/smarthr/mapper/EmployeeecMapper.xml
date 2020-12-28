@@ -4,27 +4,27 @@
   <resultMap id="BaseResultMap" type="top.smartsoftware.smarthr.model.Employeeec" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="eid" property="eid" jdbcType="INTEGER" />
-    <result column="ecDate" property="ecdate" jdbcType="DATE" />
-    <result column="ecReason" property="ecreason" jdbcType="VARCHAR" />
-    <result column="ecPoint" property="ecpoint" jdbcType="INTEGER" />
-    <result column="ecType" property="ectype" jdbcType="INTEGER" />
+    <result column="ecid" property="ecid" jdbcType="INTEGER" />
+    <result column="beforePoint" property="beforePoint" jdbcType="INTEGER" />
+    <result column="afterPoint" property="afterPoint" jdbcType="INTEGER" />
+    <result column="ecDate" property="ecDate" jdbcType="DATE" />
     <result column="remark" property="remark" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, eid, ecDate, ecReason, ecPoint, ecType, remark
+    id, eid, ecid, beforePoint, afterPoint, ecDate, remark
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
-    from employeeec
+    from employee_ec
     where id = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
-    delete from employeeec
+    delete from employee_ec
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="top.smartsoftware.smarthr.model.Employeeec" >
-    insert into employeeec (id, eid, ecDate, 
+    insert into employee_ec (id, eid, ecDate,
       ecReason, ecPoint, ecType, 
       remark)
     values (#{id,jdbcType=INTEGER}, #{eid,jdbcType=INTEGER}, #{ecdate,jdbcType=DATE}, 
@@ -32,7 +32,7 @@
       #{remark,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="top.smartsoftware.smarthr.model.Employeeec" >
-    insert into employeeec
+    insert into employee_ec
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
         id,
@@ -81,7 +81,7 @@
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="top.smartsoftware.smarthr.model.Employeeec" >
-    update employeeec
+    update employee_ec
     <set >
       <if test="eid != null" >
         eid = #{eid,jdbcType=INTEGER},
@@ -105,7 +105,7 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="top.smartsoftware.smarthr.model.Employeeec" >
-    update employeeec
+    update employee_ec
     set eid = #{eid,jdbcType=INTEGER},
       ecDate = #{ecdate,jdbcType=DATE},
       ecReason = #{ecreason,jdbcType=VARCHAR},

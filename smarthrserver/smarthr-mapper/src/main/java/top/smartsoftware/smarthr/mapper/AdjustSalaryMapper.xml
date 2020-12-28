@@ -4,9 +4,9 @@
   <resultMap id="BaseResultMap" type="top.smartsoftware.smarthr.model.AdjustSalary" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="eid" property="eid" jdbcType="INTEGER" />
-    <result column="asDate" property="asdate" jdbcType="DATE" />
-    <result column="beforeSalary" property="beforesalary" jdbcType="INTEGER" />
-    <result column="afterSalary" property="aftersalary" jdbcType="INTEGER" />
+    <result column="asDate" property="asDate" jdbcType="DATE" />
+    <result column="beforeSalary" property="beforeSalary" jdbcType="INTEGER" />
+    <result column="afterSalary" property="afterSalary" jdbcType="INTEGER" />
     <result column="reason" property="reason" jdbcType="VARCHAR" />
     <result column="remark" property="remark" jdbcType="VARCHAR" />
   </resultMap>
@@ -16,23 +16,23 @@
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
-    from adjustsalary
+    from adjust_salary
     where id = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
-    delete from adjustsalary
+    delete from adjust_salary
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="top.smartsoftware.smarthr.model.AdjustSalary" >
-    insert into adjustsalary (id, eid, asDate, 
+    insert into adjust_salary (id, eid, asDate, 
       beforeSalary, afterSalary, reason, 
       remark)
-    values (#{id,jdbcType=INTEGER}, #{eid,jdbcType=INTEGER}, #{asdate,jdbcType=DATE}, 
-      #{beforesalary,jdbcType=INTEGER}, #{aftersalary,jdbcType=INTEGER}, #{reason,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=INTEGER}, #{eid,jdbcType=INTEGER}, #{asDate,jdbcType=DATE}, 
+      #{beforeSalary,jdbcType=INTEGER}, #{afterSalary,jdbcType=INTEGER}, #{reason,jdbcType=VARCHAR}, 
       #{remark,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="top.smartsoftware.smarthr.model.AdjustSalary" >
-    insert into adjustsalary
+    insert into adjust_salary
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
         id,
@@ -40,13 +40,13 @@
       <if test="eid != null" >
         eid,
       </if>
-      <if test="asdate != null" >
+      <if test="asDate != null" >
         asDate,
       </if>
-      <if test="beforesalary != null" >
+      <if test="beforeSalary != null" >
         beforeSalary,
       </if>
-      <if test="aftersalary != null" >
+      <if test="afterSalary != null" >
         afterSalary,
       </if>
       <if test="reason != null" >
@@ -63,14 +63,14 @@
       <if test="eid != null" >
         #{eid,jdbcType=INTEGER},
       </if>
-      <if test="asdate != null" >
-        #{asdate,jdbcType=DATE},
+      <if test="asDate != null" >
+        #{asDate,jdbcType=DATE},
       </if>
-      <if test="beforesalary != null" >
-        #{beforesalary,jdbcType=INTEGER},
+      <if test="beforeSalary != null" >
+        #{beforeSalary,jdbcType=INTEGER},
       </if>
-      <if test="aftersalary != null" >
-        #{aftersalary,jdbcType=INTEGER},
+      <if test="afterSalary != null" >
+        #{afterSalary,jdbcType=INTEGER},
       </if>
       <if test="reason != null" >
         #{reason,jdbcType=VARCHAR},
@@ -81,19 +81,19 @@
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="top.smartsoftware.smarthr.model.AdjustSalary" >
-    update adjustsalary
+    update adjust_salary
     <set >
       <if test="eid != null" >
         eid = #{eid,jdbcType=INTEGER},
       </if>
-      <if test="asdate != null" >
-        asDate = #{asdate,jdbcType=DATE},
+      <if test="asDate != null" >
+        asDate = #{asDate,jdbcType=DATE},
       </if>
-      <if test="beforesalary != null" >
-        beforeSalary = #{beforesalary,jdbcType=INTEGER},
+      <if test="beforeSalary != null" >
+        beforeSalary = #{beforeSalary,jdbcType=INTEGER},
       </if>
-      <if test="aftersalary != null" >
-        afterSalary = #{aftersalary,jdbcType=INTEGER},
+      <if test="afterSalary != null" >
+        afterSalary = #{afterSalary,jdbcType=INTEGER},
       </if>
       <if test="reason != null" >
         reason = #{reason,jdbcType=VARCHAR},
@@ -105,11 +105,11 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="top.smartsoftware.smarthr.model.AdjustSalary" >
-    update adjustsalary
+    update adjust_salary
     set eid = #{eid,jdbcType=INTEGER},
-      asDate = #{asdate,jdbcType=DATE},
-      beforeSalary = #{beforesalary,jdbcType=INTEGER},
-      afterSalary = #{aftersalary,jdbcType=INTEGER},
+      asDate = #{asDate,jdbcType=DATE},
+      beforeSalary = #{beforeSalary,jdbcType=INTEGER},
+      afterSalary = #{afterSalary,jdbcType=INTEGER},
       reason = #{reason,jdbcType=VARCHAR},
       remark = #{remark,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}

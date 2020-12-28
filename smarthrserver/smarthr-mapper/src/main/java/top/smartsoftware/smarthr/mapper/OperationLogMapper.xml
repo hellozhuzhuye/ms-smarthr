@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="top.smartsoftware.smarthr.mapper.OpLogMapper" >
-  <resultMap id="BaseResultMap" type="top.smartsoftware.smarthr.model.OpLog" >
+<mapper namespace="top.smartsoftware.smarthr.mapper.OperationLogMapper" >
+  <resultMap id="BaseResultMap" type="top.smartsoftware.smarthr.model.OperationLog" >
     <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="addDate" property="adddate" jdbcType="DATE" />
+    <result column="addDate" property="addDate" jdbcType="DATE" />
     <result column="operate" property="operate" jdbcType="VARCHAR" />
     <result column="hrid" property="hrid" jdbcType="INTEGER" />
   </resultMap>
@@ -13,26 +13,26 @@
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
-    from oplog
+    from operation_log
     where id = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
-    delete from oplog
+    delete from operation_log
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="top.smartsoftware.smarthr.model.OpLog" >
-    insert into oplog (id, addDate, operate, 
+  <insert id="insert" parameterType="top.smartsoftware.smarthr.model.OperationLog" >
+    insert into operation_log (id, addDate, operate, 
       hrid)
-    values (#{id,jdbcType=INTEGER}, #{adddate,jdbcType=DATE}, #{operate,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=INTEGER}, #{addDate,jdbcType=DATE}, #{operate,jdbcType=VARCHAR}, 
       #{hrid,jdbcType=INTEGER})
   </insert>
-  <insert id="insertSelective" parameterType="top.smartsoftware.smarthr.model.OpLog" >
-    insert into oplog
+  <insert id="insertSelective" parameterType="top.smartsoftware.smarthr.model.OperationLog" >
+    insert into operation_log
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
         id,
       </if>
-      <if test="adddate != null" >
+      <if test="addDate != null" >
         addDate,
       </if>
       <if test="operate != null" >
@@ -46,8 +46,8 @@
       <if test="id != null" >
         #{id,jdbcType=INTEGER},
       </if>
-      <if test="adddate != null" >
-        #{adddate,jdbcType=DATE},
+      <if test="addDate != null" >
+        #{addDate,jdbcType=DATE},
       </if>
       <if test="operate != null" >
         #{operate,jdbcType=VARCHAR},
@@ -57,11 +57,11 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="top.smartsoftware.smarthr.model.OpLog" >
-    update oplog
+  <update id="updateByPrimaryKeySelective" parameterType="top.smartsoftware.smarthr.model.OperationLog" >
+    update operation_log
     <set >
-      <if test="adddate != null" >
-        addDate = #{adddate,jdbcType=DATE},
+      <if test="addDate != null" >
+        addDate = #{addDate,jdbcType=DATE},
       </if>
       <if test="operate != null" >
         operate = #{operate,jdbcType=VARCHAR},
@@ -72,9 +72,9 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="top.smartsoftware.smarthr.model.OpLog" >
-    update oplog
-    set addDate = #{adddate,jdbcType=DATE},
+  <update id="updateByPrimaryKey" parameterType="top.smartsoftware.smarthr.model.OperationLog" >
+    update operation_log
+    set addDate = #{addDate,jdbcType=DATE},
       operate = #{operate,jdbcType=VARCHAR},
       hrid = #{hrid,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}

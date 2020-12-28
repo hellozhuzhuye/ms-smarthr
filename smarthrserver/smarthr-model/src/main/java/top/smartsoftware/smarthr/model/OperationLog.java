@@ -2,10 +2,10 @@ package top.smartsoftware.smarthr.model;
 
 import java.util.Date;
 
-public class OpLog {
+public class OperationLog {
     private Integer id;
 
-    private Date adddate;
+    private Date addDate;
 
     private String operate;
 
@@ -19,12 +19,12 @@ public class OpLog {
         this.id = id;
     }
 
-    public Date getAdddate() {
-        return adddate;
+    public Date getAddDate() {
+        return addDate;
     }
 
-    public void setAdddate(Date adddate) {
-        this.adddate = adddate;
+    public void setAddDate(Date addDate) {
+        this.addDate = addDate;
     }
 
     public String getOperate() {
@@ -32,7 +32,7 @@ public class OpLog {
     }
 
     public void setOperate(String operate) {
-        this.operate = operate == null ? null : operate.trim();
+        this.operate = operate;
     }
 
     public Integer getHrid() {

@@ -11,19 +11,19 @@
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
-    from politicsstatus
+    from politics_status
     where id = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
-    delete from politicsstatus
+    delete from politics_status
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="top.smartsoftware.smarthr.model.Politicsstatus" >
-    insert into politicsstatus (id, name)
+    insert into politics_status (id, name)
     values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="top.smartsoftware.smarthr.model.Politicsstatus" >
-    insert into politicsstatus
+    insert into politics_status
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
         id,
@@ -42,7 +42,7 @@
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="top.smartsoftware.smarthr.model.Politicsstatus" >
-    update politicsstatus
+    update politics_status
     <set >
       <if test="name != null" >
         name = #{name,jdbcType=VARCHAR},
@@ -51,11 +51,11 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="top.smartsoftware.smarthr.model.Politicsstatus" >
-    update politicsstatus
+    update politics_status
     set name = #{name,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
   <select id="getAllPoliticsstatus" resultMap="BaseResultMap">
-    select * from politicsstatus
+    select * from politics_status
   </select>
 </mapper>

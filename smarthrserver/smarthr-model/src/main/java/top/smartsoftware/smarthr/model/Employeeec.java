@@ -7,13 +7,13 @@ public class Employeeec {
 
     private Integer eid;
 
-    private Date ecdate;
+    private Integer ecid;
 
-    private String ecreason;
+    private Integer beforePoint;
 
-    private Integer ecpoint;
+    private Integer afterPoint;
 
-    private Integer ectype;
+    private Date ecDate;
 
     private String remark;
 
@@ -33,36 +33,36 @@ public class Employeeec {
         this.eid = eid;
     }
 
-    public Date getEcdate() {
-        return ecdate;
+    public Integer getEcid() {
+        return ecid;
     }
 
-    public void setEcdate(Date ecdate) {
-        this.ecdate = ecdate;
+    public void setEcid(Integer ecid) {
+        this.ecid = ecid;
     }
 
-    public String getEcreason() {
-        return ecreason;
+    public Integer getBeforePoint() {
+        return beforePoint;
     }
 
-    public void setEcreason(String ecreason) {
-        this.ecreason = ecreason == null ? null : ecreason.trim();
+    public void setBeforePoint(Integer beforePoint) {
+        this.beforePoint = beforePoint;
     }
 
-    public Integer getEcpoint() {
-        return ecpoint;
+    public Integer getAfterPoint() {
+        return afterPoint;
     }
 
-    public void setEcpoint(Integer ecpoint) {
-        this.ecpoint = ecpoint;
+    public void setAfterPoint(Integer afterPoint) {
+        this.afterPoint = afterPoint;
     }
 
-    public Integer getEctype() {
-        return ectype;
+    public Date getEcDate() {
+        return ecDate;
     }
 
-    public void setEctype(Integer ectype) {
-        this.ectype = ectype;
+    public void setEcDate(Date ecDate) {
+        this.ecDate = ecDate;
     }
 
     public String getRemark() {
@@ -70,6 +70,6 @@ public class Employeeec {
     }
 
     public void setRemark(String remark) {
-        this.remark = remark == null ? null : remark.trim();
+        this.remark = remark;
     }
 }
