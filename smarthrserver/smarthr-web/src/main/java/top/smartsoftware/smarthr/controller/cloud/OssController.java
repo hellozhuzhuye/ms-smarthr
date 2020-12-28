@@ -51,7 +51,13 @@ public class OssController {
     @RequestMapping(value = "/renameObject", method = RequestMethod.GET)
     public RespBean renameObject(String sourceObjectName,String destinationObjectName) {
         ossService.renameObject(sourceObjectName,destinationObjectName);
-        return RespBean.ok("删除成功");
+        return RespBean.ok();
+    }
+
+    @RequestMapping(value = "/newFolder", method = RequestMethod.GET)
+    public RespBean newFolder(String newFolderName) {
+        ossService.newFolder(newFolderName);
+        return RespBean.ok();
     }
 
 
@@ -62,9 +68,9 @@ public class OssController {
     }
 
     @RequestMapping(value = "/signUrl", method = RequestMethod.GET)
-    public RespBean signUrl(String objectName) {
-        String signUrl = ossService.signUrl(objectName);
-        return RespBean.ok("请求下载成功,正在下载...",signUrl);
+    public RespBean signUrl(String objectName,Integer expirationHours) {
+        String signUrl = ossService.signUrl(objectName,expirationHours);
+        return RespBean.ok((Object) signUrl);
     }
 
 }

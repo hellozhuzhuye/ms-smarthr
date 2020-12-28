@@ -3,20 +3,20 @@ spring:
     type: com.alibaba.druid.pool.DruidDataSource
     username: root
     password: 74110asd123.
-    url: jdbc:mysql://47.112.105.123:3306/vhr?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+    url: jdbc:mysql://47.112.105.123:3306/smarthr?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
   rabbitmq:
     username: guest
     password: guest
     host: 47.112.105.123
     publisher-returns: true
-    publisher-confirms: true
+    publisher-confirm-type: correlated
   redis:
     host: 47.112.105.123
     database: 0
     port: 6379
-    password:
+    password: 74110asd123.
   cache:
-    cache-names: menus_cache
+    cache-names: menus_withRole_cache
 server:
   port: 8081
   compression:
@@ -27,7 +27,8 @@ fastdfs:
 
 aliyun:
   oss:
-    endpoint: oss.smartsoftware.top # oss对外服务的访问域名
+    shenzhenEndpoint: oss-cn-shenzhen.aliyuncs.com # oss深圳对外服务的访问域名
+    endpoint: oss.smartsoftware.top # oss cdn加速域名
     accessKeyId: LTAI4GC3GWTFECczVmxmb1aA # 访问身份验证中用到用户标识
     accessKeySecret: NkYLqwYScPJrnJ7IPFHX5MEeVHvfgi # 用户用于加密签名字符串和oss用来验证签名字符串的密钥
     bucketName: 826076402 # oss的存储空间
