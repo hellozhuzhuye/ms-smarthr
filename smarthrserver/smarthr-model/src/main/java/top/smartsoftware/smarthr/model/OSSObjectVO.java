@@ -1,11 +1,13 @@
 package top.smartsoftware.smarthr.model;
 
+import java.io.Serializable;
+
 /**
  * @Description
  * @Author xjx
  * @Date 2020-12-19
  */
-public class OSSObjectVO {
+public class OSSObjectVO implements Serializable {
     private String key;
     private String size;
     private String lastModified;

@@ -1,12 +1,14 @@
 package top.smartsoftware.mailserver;
 
 import org.springframework.amqp.core.Queue;
+import org.springframework.amqp.rabbit.annotation.EnableRabbit;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import top.smartsoftware.smarthr.model.MailConstants;
 
 @SpringBootApplication
+@EnableRabbit
 public class MailserverApplication {
 
 	public static void main(String[] args) {

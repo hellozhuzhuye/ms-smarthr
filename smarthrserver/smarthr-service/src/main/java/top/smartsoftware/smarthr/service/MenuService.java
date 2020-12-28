@@ -1,6 +1,8 @@
 package top.smartsoftware.smarthr.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import org.springframework.stereotype.Service;
@@ -19,6 +21,7 @@ import java.util.List;
  */
 
 @Service
+@CacheConfig(cacheNames = "menus_withRole_cache")
 public class MenuService {
 
     @Autowired
@@ -31,6 +34,7 @@ public class MenuService {
         return menuMapper.getMenusByHrId(((Hr) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId());
     }
 
+    @Cacheable
     public List<Menu> getAllMenusWithRole() {
         return menuMapper.getAllMenusWithRole();
     }

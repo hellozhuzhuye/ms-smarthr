@@ -1,11 +1,13 @@
 package top.smartsoftware.smarthr.model;
 
+import java.io.Serializable;
+
 /**
  * @Description
  * @Author xjx
  * @Date 2020-11-17
  */
-public class Meta {
+public class Meta implements Serializable {
 
     private Boolean keepAlive;
 

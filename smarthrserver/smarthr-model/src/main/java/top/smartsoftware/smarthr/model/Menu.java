@@ -1,8 +1,9 @@
 package top.smartsoftware.smarthr.model;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Menu {
+public class Menu implements Serializable {
     private Integer id;
 
     private String url;

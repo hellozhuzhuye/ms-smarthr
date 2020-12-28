@@ -14,6 +14,10 @@ import com.aliyun.oss.common.utils.BinaryUtil;
 import com.aliyun.oss.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import top.smartsoftware.smarthr.config.OssConfig;
 import top.smartsoftware.smarthr.model.OSSObjectVO;
@@ -25,17 +29,21 @@ import top.smartsoftware.smarthr.utils.ToolDateTime;
 
 
 import javax.servlet.http.HttpServletRequest;
+import javax.sound.midi.Soundbank;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.Serializable;
 import java.net.URL;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 
 @Service
+@CacheConfig(cacheNames = "oss_cache")
 public class OssService {
 
 
@@ -44,6 +52,9 @@ public class OssService {
 
     @Autowired
     private OSSClient ossClient;
+
+    @Autowired
+    private RedisTemplate redisTemplate;
 
     /**
      * 签名生成
@@ -68,11 +79,11 @@ public class OssService {
         callback.setCallbackBody("filename=${object}&size=${size}&mimeType=${mimeType}&height=${imageInfo.height}&width=${imageInfo.width}");
         callback.setCallbackBodyType("application/x-www-form-urlencoded");
         // 提交节点
-        String action = "http://"+ossConfig.getALIYUN_OSS_BUCKET_NAME()+"."+ossConfig.getALIYUN_SZ_OSS_ENDPOINT();
+        String action = "http://" + ossConfig.getALIYUN_OSS_BUCKET_NAME() + "." + ossConfig.getALIYUN_SZ_OSS_ENDPOINT();
         try {
             PolicyConditions policyConds = new PolicyConditions();
             policyConds.addConditionItem(PolicyConditions.COND_CONTENT_LENGTH_RANGE, 0, maxSize);
-            policyConds.addConditionItem(MatchMode.StartWith,PolicyConditions.COND_KEY, dir);
+            policyConds.addConditionItem(MatchMode.StartWith, PolicyConditions.COND_KEY, dir);
             String postPolicy = ossClient.generatePostPolicy(expiration, policyConds);
             byte[] binaryData = postPolicy.getBytes("utf-8");
             String policy = BinaryUtil.toBase64String(binaryData);
@@ -90,14 +101,13 @@ public class OssService {
         return result;
     }
 
-    public List<OSSObjectVO> getObjectList(String objectName) throws ParseException, IOException {
-
+    @Cacheable
+    public List<OSSObjectVO> getObjectList(String objectName) throws IOException {
         ListObjectsRequest listObjectsRequest = new ListObjectsRequest(ossConfig.getALIYUN_OSS_BUCKET_NAME());
         listObjectsRequest.setDelimiter("/");
         if (objectName != null && !"".equals(objectName)) {
             listObjectsRequest.setPrefix(objectName);
         }
-
         ObjectListing listing = ossClient.listObjects(listObjectsRequest);
         List<OSSObjectVO> ossObjectVOList = new ArrayList<>();
         for (String commonPrefix : listing.getCommonPrefixes()) {
@@ -111,7 +121,6 @@ public class OssService {
         for (OSSObjectSummary objectSummary : listing.getObjectSummaries()) {
             OSSObjectVO ossObjectVO = new OSSObjectVO();
             String contentType = MimeTypeUtil.getContentTypeBySuffix(objectSummary.getKey());
-
             Integer iconCode = MimeTypeUtil.toIconCode(contentType);
             String substring = objectSummary.getKey();
             if (objectName != null && !"".equals(objectName)) {
@@ -132,17 +141,19 @@ public class OssService {
         return ossObjectVOList;
     }
 
-    public String signUrl(String objectName) {
-
-        Date expiration = new Date(new Date().getTime() + 3600 * 24000);
+    public String signUrl(String objectName, Integer expirationHours) {
+        Date expiration = new Date(new Date().getTime() + 3600 * expirationHours * 1000);
         GeneratePresignedUrlRequest request = new GeneratePresignedUrlRequest(ossConfig.getALIYUN_OSS_BUCKET_NAME(), objectName, HttpMethod.GET);
         request.setExpiration(expiration);
         URL signedUrl = ossClient.generatePresignedUrl(request);
         System.out.println("signed url for getObject: " + signedUrl);
+        String key = objectName + "_" + ToolDateTime.getCurDateTime() + "_" + expirationHours;
+        redisTemplate.opsForValue().set(key, signedUrl, expirationHours, TimeUnit.HOURS);
         return signedUrl.toString();
     }
 
 
+    @CacheEvict(allEntries = true)
     public void deleteObject(String delObject) {
 
         if (delObject.endsWith("/")) {
@@ -203,7 +214,7 @@ public class OssService {
         return fileSizeString;
     }
 
-
+    @CacheEvict(allEntries = true)
     public void renameObject(String sourceObjectName, String destinationObjectName) {
         // 重命名=先拷贝再删除
         CopyObjectResult result = ossClient.copyObject(ossConfig.getALIYUN_OSS_BUCKET_NAME(), sourceObjectName, ossConfig.getALIYUN_OSS_BUCKET_NAME(), destinationObjectName);
@@ -212,9 +223,10 @@ public class OssService {
         }
     }
 
+    @CacheEvict(allEntries = true)
     public void newFolder(String newFolderName) {
-        if (!newFolderName.endsWith("/")){
-            newFolderName+="/";
+        if (!newFolderName.endsWith("/")) {
+            newFolderName += "/";
         }
         String content = "Hello OSS";
         PutObjectRequest putObjectRequest = new PutObjectRequest(ossConfig.getALIYUN_OSS_BUCKET_NAME(), newFolderName, new ByteArrayInputStream(content.getBytes()));
