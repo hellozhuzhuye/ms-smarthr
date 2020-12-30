@@ -14,7 +14,7 @@ import java.util.regex.Pattern;
  * @Author xjx
  * @Date 2020-12-04
  */
-public class ToolDateTime {
+public class DateTimeUtil {
 
     public static final String pattern_ymd = "yyyy-MM-dd"; // pattern_ymd
     public static final String pattern_ymd_ch = "yyyy年MM月dd日"; // pattern_ymd
@@ -117,7 +117,7 @@ public class ToolDateTime {
             throw new Exception("日期格式错误");
 
         String str = yyyy + con + mm + con + dd;
-        return ToolDateTime.getDate(str, ToolDateTime.DATAFORMAT_STR);
+        return DateTimeUtil.getDate(str, DateTimeUtil.DATAFORMAT_STR);
     }
 
     /**
@@ -2073,19 +2073,19 @@ public class ToolDateTime {
         switch(type){
             //全年月份
             case "0" :
-                Date  bginTime = ToolDateTime.getCurrentYearStartTime();
-                Date  endTime = ToolDateTime.getCurrentYearEndTime();
-                dataList = ToolDateTime.printMonths(bginTime,endTime);
+                Date  bginTime = DateTimeUtil.getCurrentYearStartTime();
+                Date  endTime = DateTimeUtil.getCurrentYearEndTime();
+                dataList = DateTimeUtil.printMonths(bginTime,endTime);
                 break;
             //本周
             case "1" :
-                Map<String, Date> Weekmap = ToolDateTime.getWeekDate(new Date());
-                dataList = ToolDateTime.printDay(Weekmap.get("start"),Weekmap.get("end"));
+                Map<String, Date> Weekmap = DateTimeUtil.getWeekDate(new Date());
+                dataList = DateTimeUtil.printDay(Weekmap.get("start"),Weekmap.get("end"));
                 break;
             //本月
             case "2" :
-                Map<String, Date> map =ToolDateTime.getMonthDate(new Date());
-                dataList = ToolDateTime.printDay(map.get("start"),map.get("end"));
+                Map<String, Date> map = DateTimeUtil.getMonthDate(new Date());
+                dataList = DateTimeUtil.printDay(map.get("start"),map.get("end"));
                 break;
             //当天时间段00:00:00~23:59:59
             case "3" :
@@ -2162,7 +2162,7 @@ public class ToolDateTime {
     public static List<String> yearsList() {
         List<String> yearList = new ArrayList<String>();
         for (int i=0; i<10;i++){
-            String year = ToolDateTime.dateToDateString(ToolDateTime.getInternalDateByYear(new Date(),-i),"yyyy");
+            String year = DateTimeUtil.dateToDateString(DateTimeUtil.getInternalDateByYear(new Date(),-i),"yyyy");
             yearList.add(i,year);
         }
         return yearList;
@@ -2263,20 +2263,20 @@ public class ToolDateTime {
 
     public static List<String>  weekStart(){
         List<String> weekStartList = new ArrayList<String>();
-        String year = ToolDateTime.dateToDateString(new Date(),"yyyy");
+        String year = DateTimeUtil.dateToDateString(new Date(),"yyyy");
         int weekNum = getMaxWeekNumOfYear(Integer.parseInt(year));
         for (int i = 0; i<weekNum; i++){
-            weekStartList.add(i,ToolDateTime.dateToDateString(getFirstDayOfWeek(Integer.parseInt(year),i),pattern_ymd));
+            weekStartList.add(i, DateTimeUtil.dateToDateString(getFirstDayOfWeek(Integer.parseInt(year),i),pattern_ymd));
         }
         return weekStartList;
     }
 
     public static List<String>  weekEnd(){
         List<String> weekEndList = new ArrayList<String>();
-        String year = ToolDateTime.dateToDateString(new Date(),"yyyy");
+        String year = DateTimeUtil.dateToDateString(new Date(),"yyyy");
         int weekNum = getMaxWeekNumOfYear(Integer.parseInt(year));
         for (int i = 0; i<weekNum; i++){
-            weekEndList.add(i,ToolDateTime.dateToDateString(getLastDayOfWeek(Integer.parseInt(year),i),pattern_ymd));
+            weekEndList.add(i, DateTimeUtil.dateToDateString(getLastDayOfWeek(Integer.parseInt(year),i),pattern_ymd));
         }
         return weekEndList;
     }
@@ -2289,7 +2289,7 @@ public class ToolDateTime {
      * @return
      */
     public static int thisYearMaxWeekNum(Date date){
-        int year = Integer.parseInt(ToolDateTime.dateToDateString(date,"yyyy"));
+        int year = Integer.parseInt(DateTimeUtil.dateToDateString(date,"yyyy"));
         int weekNum = getMaxWeekNumOfYear(year);
         return weekNum;
     }
@@ -2300,11 +2300,11 @@ public class ToolDateTime {
      */
     public static List<String>  weeks(){
         List<String> weekList = new ArrayList<String>();
-        String year = ToolDateTime.dateToDateString(new Date(),"yyyy");
+        String year = DateTimeUtil.dateToDateString(new Date(),"yyyy");
         int weekNum = getMaxWeekNumOfYear(Integer.parseInt(year));
         for (int i = 0; i<weekNum; i++){
-            String start = ToolDateTime.dateToDateString(getFirstDayOfWeek(Integer.parseInt(year),i),pattern_ymd);
-            String end =  ToolDateTime.dateToDateString(getLastDayOfWeek(Integer.parseInt(year),i),pattern_ymd);
+            String start = DateTimeUtil.dateToDateString(getFirstDayOfWeek(Integer.parseInt(year),i),pattern_ymd);
+            String end =  DateTimeUtil.dateToDateString(getLastDayOfWeek(Integer.parseInt(year),i),pattern_ymd);
             String weekStr = start + "~" + end;
             weekList.add(i,weekStr);
         }

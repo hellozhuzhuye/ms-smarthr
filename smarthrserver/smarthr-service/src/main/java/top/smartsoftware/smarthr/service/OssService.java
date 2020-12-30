@@ -7,13 +7,11 @@ package top.smartsoftware.smarthr.service;
  */
 
 import cn.hutool.json.JSONUtil;
-import com.alibaba.druid.util.StringUtils;
 import com.aliyun.oss.HttpMethod;
 import com.aliyun.oss.OSSClient;
 import com.aliyun.oss.common.utils.BinaryUtil;
 import com.aliyun.oss.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -25,19 +23,15 @@ import top.smartsoftware.smarthr.model.OssCallbackParam;
 import top.smartsoftware.smarthr.model.OssCallbackResult;
 import top.smartsoftware.smarthr.model.OssPolicyResult;
 import top.smartsoftware.smarthr.utils.MimeTypeUtil;
-import top.smartsoftware.smarthr.utils.ToolDateTime;
+import top.smartsoftware.smarthr.utils.DateTimeUtil;
 
 
 import javax.servlet.http.HttpServletRequest;
-import javax.sound.midi.Soundbank;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.Serializable;
 import java.net.URL;
 import java.text.DecimalFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
@@ -130,7 +124,7 @@ public class OssService {
                 ossObjectVO.setKey(substring);
                 String printSize = fileSizeConver(objectSummary.getSize());
                 ossObjectVO.setSize(printSize);
-                ossObjectVO.setLastModified(ToolDateTime.dateToDateString(objectSummary.getLastModified(), "yyyy-MM-dd HH:mm:ss"));
+                ossObjectVO.setLastModified(DateTimeUtil.dateToDateString(objectSummary.getLastModified(), "yyyy-MM-dd HH:mm:ss"));
                 ossObjectVO.setOwner(objectSummary.getOwner().getId());
                 ossObjectVO.setIsFolder(0);
                 ossObjectVO.setContentType(contentType);
@@ -147,7 +141,7 @@ public class OssService {
         request.setExpiration(expiration);
         URL signedUrl = ossClient.generatePresignedUrl(request);
         System.out.println("signed url for getObject: " + signedUrl);
-        String key = objectName + "_" + ToolDateTime.getCurDateTime() + "_" + expirationHours;
+        String key = objectName + "_" + DateTimeUtil.getCurDateTime() + "_" + expirationHours;
         redisTemplate.opsForValue().set(key, signedUrl, expirationHours, TimeUnit.HOURS);
         return signedUrl.toString();
     }

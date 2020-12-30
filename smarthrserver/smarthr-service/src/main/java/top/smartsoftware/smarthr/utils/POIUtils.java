@@ -78,6 +78,7 @@ public class POIUtils {
         sheet.setColumnWidth(22, 14 * 256);
         sheet.setColumnWidth(23, 15 * 256);
         sheet.setColumnWidth(24, 15 * 256);
+        sheet.setColumnWidth(25, 15 * 256);
         //6. 创建标题行
         HSSFRow r0 = sheet.createRow(0);
         HSSFCell c0 = r0.createCell(0);
@@ -155,6 +156,9 @@ public class POIUtils {
         HSSFCell c24 = r0.createCell(24);
         c24.setCellStyle(headerStyle);
         c24.setCellValue("合同终止日期");
+        HSSFCell c25 = r0.createCell(25);
+        c25.setCellStyle(headerStyle);
+        c25.setCellValue("转正日期");
         for (int i = 0; i < list.size(); i++) {
             Employee emp = list.get(i);
             HSSFRow row = sheet.createRow(i + 1);

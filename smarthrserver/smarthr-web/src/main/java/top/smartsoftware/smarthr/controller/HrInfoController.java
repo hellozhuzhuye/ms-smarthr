@@ -11,6 +11,7 @@ import top.smartsoftware.smarthr.model.Hr;
 import top.smartsoftware.smarthr.model.RespBean;
 import top.smartsoftware.smarthr.service.HrService;
 
+import java.io.IOException;
 import java.util.Map;
 
 /**
@@ -52,17 +53,13 @@ public class HrInfoController {
         return RespBean.error("更新失败!");
     }
 
-//    @PostMapping("/hr/userface")
-//    public RespBean updateHrUserface(MultipartFile file, Integer id, Authentication authentication) {
-//        String fileId = FastDFSUtils.upload(file);
-//        String url = nginxHost + fileId;
-//        if (hrService.updateUserface(url, id) == 1) {
-//            Hr hr = (Hr) authentication.getPrincipal();
-//            hr.setUserface(url);
-//            SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(hr, authentication.getCredentials(), authentication.getAuthorities()));
-//            return RespBean.ok("更新成功!", url);
-//        }
-//        return RespBean.error("更新失败!");
-//    }
 
+    @PostMapping("/hr/userface")
+    public RespBean updateHrUserface(MultipartFile file, Integer id, Authentication authentication) throws IOException {
+        String url = hrService.updateUserface(file, id, authentication);
+        if (url!=null && url!="") {
+            return RespBean.ok("更新成功!", url);
+        }
+        return RespBean.error("更新失败!");
+    }
 }

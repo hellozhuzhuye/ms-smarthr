@@ -17,6 +17,13 @@ spring:
     password: 74110asd123.
   cache:
     cache-names: menus_withRole_cache
+  servlet:
+    multipart:
+      max-file-size: 1024MB
+      max-request-size: 2048MB
+      enabled: true
+
+
 server:
   port: 8081
   compression:
@@ -37,5 +44,5 @@ aliyun:
     maxSize: 500 # 上传文件大小(M)
     callback: http://hr.smartsoftware.top/aliyun/oss/callback # 文件上传成功后的回调地址
     dir:
-      prefix:   # 上传文件夹路径前缀
+      prefix: cloud/   # 上传文件夹路径前缀
 

@@ -24,8 +24,8 @@ public class SobConfigController {
     SalaryService salaryService;
 
     @GetMapping("/")
-    public RespPageBean getEmployeeByPageWithSalary(@RequestParam(defaultValue = "1") Integer page, @RequestParam(defaultValue = "10") Integer size) {
-        return employeeService.getEmployeeByPageWithSalary(page, size);
+    public RespPageBean getEmployeeByPageWithSalary(@RequestParam(defaultValue = "1") Integer page, @RequestParam(defaultValue = "10") Integer size,String name) {
+        return employeeService.getEmployeeByPageWithSalary(page, size,name);
     }
 
     @GetMapping("/salaries")

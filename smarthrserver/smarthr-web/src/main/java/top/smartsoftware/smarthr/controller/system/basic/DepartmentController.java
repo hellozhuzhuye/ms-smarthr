@@ -20,8 +20,8 @@ public class DepartmentController {
     DepartmentService departmentService;
 
     @GetMapping("/")
-    public List<Department> getAllDepartments() {
-        return departmentService.getAllDepartments();
+    public RespBean getAllDepartments() {
+        return RespBean.ok(departmentService.getAllDepartments());
     }
 
     @PostMapping("/")

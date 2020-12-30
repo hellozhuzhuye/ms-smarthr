@@ -17,6 +17,7 @@
         <module>smarthr-mapper</module>
         <module>smarthr-service</module>
         <module>smarthr-model</module>
+        <module>smarthr-web</module>
     </modules>
 
 

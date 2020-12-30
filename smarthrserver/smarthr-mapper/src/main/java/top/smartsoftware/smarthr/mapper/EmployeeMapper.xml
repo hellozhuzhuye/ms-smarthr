@@ -91,13 +91,17 @@
     spensionBase,s.`pensionPer` AS spensionPer,s.`trafficSalary` AS strafficSalary FROM employee e LEFT JOIN
     employee_salary es ON e.`id`=es.`eid` LEFT JOIN salary s ON es.`sid`=s.`id` LEFT JOIN department d ON
     e.`departmentId`=d.`id`
+
+    <if test="name != null and name!=''">
+      WHERE e.name like "%"#{name}"%"
+    </if>
     order by e.id
     <if test="page !=null and size !=null">
       limit #{page},#{size}
     </if>
   </select>
   <insert id="updateEmployeeSalaryById">
-        REPLACE INTO empsalary (eid,sid) VALUES(#{eid},#{sid})
+        REPLACE INTO employee_salary (eid,sid) VALUES(#{eid},#{sid})
     </insert>
   <select id="getEmployeeById" resultMap="AllEmployeeInfo">
         select e.*,p.`id` as pid,p.`name` as pname,n.`id` as nid,n.`name` as nname,d.`id` as did,d.`name` as

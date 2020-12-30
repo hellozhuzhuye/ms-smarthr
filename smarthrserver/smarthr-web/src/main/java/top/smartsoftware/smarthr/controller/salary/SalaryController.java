@@ -20,8 +20,8 @@ public class SalaryController {
     SalaryService salaryService;
 
     @GetMapping("/")
-    public List<Salary> getAllSalaries() {
-        return salaryService.getAllSalaries();
+    public RespBean getAllSalaries() {
+        return RespBean.ok(salaryService.getAllSalaries());
     }
 
     @PostMapping("/")
