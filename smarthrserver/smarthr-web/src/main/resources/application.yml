@@ -22,10 +22,12 @@ spring:
       max-file-size: 1024MB
       max-request-size: 2048MB
       enabled: true
-
+  mvc:
+    async:
+      request-timeout: 10000
 
 server:
-  port: 8081
+  port: 8262
   compression:
     enabled: true
 fastdfs:
