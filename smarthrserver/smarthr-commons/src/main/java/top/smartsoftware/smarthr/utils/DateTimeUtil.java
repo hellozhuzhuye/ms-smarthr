@@ -1022,6 +1022,29 @@ public class DateTimeUtil {
         return map;
     }
 
+    /**
+     * 根据日期，获取所在周的开始和结束日期
+     *
+     * @param date
+     * @return
+     */
+    public static Map<String, String> getWeekDateFormat(Date date) {
+        Calendar c = Calendar.getInstance();
+        c.setTime(date);
+        int v = c.get(Calendar.DAY_OF_WEEK) - 1;
+        int week =  c.get(Calendar.WEEK_OF_YEAR);
+        if(v == 0) {
+            week = week - 1;
+        }
+        Map<String, Date> map = getStartEndDateByWeek(c.get(Calendar.YEAR), week);
+        String start = format(map.get("start"), "yyyy-MM-dd");
+        String end = format(map.get("end"), "yyyy-MM-dd");
+        HashMap<String, String> hashMap = new HashMap<>();
+        hashMap.put("start",start);
+        hashMap.put("end",end);
+        return hashMap;
+    }
+
 
     /**
      * 根据日期，获取上周的开始和结束日期

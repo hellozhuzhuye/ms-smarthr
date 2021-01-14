@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="top.smartsoftware.smarthr.mapper.AttendanceMapper">
+    <resultMap id="BaseResultMap" type="top.smartsoftware.smarthr.model.Attendance">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="eid" property="eid" jdbcType="INTEGER"/>
+        <result column="date" property="date" jdbcType="DATE"/>
+        <result column="weekOfDay" property="weekOfDay" jdbcType="VARCHAR"/>
+        <result column="morning" property="morning" jdbcType="VARCHAR"/>
+        <result column="morningStatus" property="morningStatus" jdbcType="INTEGER"/>
+        <result column="afternoon" property="afternoon" jdbcType="VARCHAR"/>
+        <result column="afternoonStatus" property="afternoonStatus" jdbcType="INTEGER"/>
+        <result column="remark" property="remark" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <select id="getAttendanceListByPage" resultMap="AttendanceListResultMap">
+        SELECT
+        e.id,
+        e.workID,
+        d.name as dname,
+        e.name as ename,
+        ea.date,
+        ea.weekOfDay,
+        ea.morning,
+        ea.morningStatus,
+        ea.afternoon,
+        ea.afternoonStatus,
+        ea.remark
+        FROM
+        employee_attendance ea
+        LEFT JOIN employee e ON ea.eid = e.id
+        LEFT JOIN department d ON e.departmentId = d.id
+        WHERE
+        1=1
+        <if test="employee.name !=null and employee.name!=''">
+            and e.name like concat('%',#{employee.name},'%')
+        </if>
+        <if test="employee.id !=null and employee.id!=''">
+            and e.id=#{employee.id}
+        </if>
+        <if test="beginDateScope !=null">
+            and ea.date between #{beginDateScope[0]} and #{beginDateScope[1]}
+        </if>
+        ORDER BY e.workID,ea.date
+    </select>
+    <resultMap id="AttendanceListResultMap" type="top.smartsoftware.smarthr.model.vo.AttendanceVO">
+        <result column="id" property="id" jdbcType="INTEGER"/>
+        <result column="workID" property="workID" jdbcType="CHAR"/>
+        <result column="ename" property="ename" jdbcType="VARCHAR"/>
+        <result column="dname" property="dname" jdbcType="VARCHAR"/>
+        <result column="date" property="date" jdbcType="VARCHAR"/>
+        <result column="weekOfDay" property="weekOfDay" jdbcType="VARCHAR"/>
+        <result column="morning" property="morning" jdbcType="VARCHAR"/>
+        <result column="morningStatus" property="morningStatus" jdbcType="INTEGER"/>
+        <result column="afternoon" property="afternoon" jdbcType="VARCHAR"/>
+        <result column="afternoonStatus" property="afternoonStatus" jdbcType="INTEGER"/>
+        <result column="remark" property="remark" jdbcType="VARCHAR"/>
+        <result column="normal" property="normal" jdbcType="INTEGER"/>
+        <result column="late" property="late" jdbcType="INTEGER"/>
+        <result column="early" property="early" jdbcType="INTEGER"/>
+        <result column="asked" property="asked" jdbcType="INTEGER"/>
+        <result column="workout" property="workout" jdbcType="INTEGER"/>
+        <result column="leaved" property="leaved" jdbcType="INTEGER"/>
+    </resultMap>
+
+
+    <select id="getCountAttendance" resultMap="AttendanceListResultMap">
+        SELECT
+        e.id,
+        e.workID,
+        d.`name` dname,
+        e. NAME ename,
+        COUNT(
+        CASE
+        WHEN (morningStatus = 0 and afternoonStatus = 0) THEN
+        0
+        END
+        ) normal,
+        COUNT(
+        CASE
+        WHEN (morningStatus = 1) THEN
+        0
+        END
+        ) late,
+        COUNT(
+        CASE
+        WHEN (afternoonStatus = 2) THEN
+        0
+        END
+        ) early,
+        COUNT(
+        CASE
+        WHEN (afternoonStatus = 3) THEN
+        0
+        END
+        ) asked,
+        COUNT(
+        CASE
+        WHEN (afternoonStatus = 4) THEN
+        0
+        END
+        ) workout,
+        COUNT(
+        CASE
+        WHEN (afternoonStatus = 5) THEN
+        0
+        END
+        ) leaved
+        FROM
+        employee_attendance ea
+        LEFT JOIN employee e ON ea.eid = e.id
+        LEFT JOIN department d ON e.departmentId = d.id
+        WHERE
+        1=1
+        <if test="employee.name !=null and employee.name!=''">
+            and e.name like concat('%',#{employee.name},'%')
+        </if>
+        <if test="employee.id !=null and employee.id!=''">
+            and e.id=#{employee.id}
+        </if>
+        <if test="beginDateScope !=null">
+            and ea.date between #{beginDateScope[0]} and #{beginDateScope[1]}
+        </if>
+        GROUP BY
+        ea.eid
+    </select>
+
+
+</mapper>

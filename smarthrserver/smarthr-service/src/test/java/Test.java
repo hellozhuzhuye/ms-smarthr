@@ -1,3 +1,4 @@
+import cn.hutool.core.date.DateTime;
 import cn.smallbun.screw.core.Configuration;
 import cn.smallbun.screw.core.engine.EngineConfig;
 import cn.smallbun.screw.core.engine.EngineFileType;
@@ -5,8 +6,12 @@ import cn.smallbun.screw.core.engine.EngineTemplateType;
 import cn.smallbun.screw.core.execute.DocumentationExecute;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
+import top.smartsoftware.smarthr.utils.DateTimeUtil;
 
 import javax.sql.DataSource;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -66,6 +71,28 @@ public class Test {
 
         // 4、执行生成
         new DocumentationExecute(config).execute();
+    }
+
+    @org.junit.jupiter.api.Test
+    public void test1() {
+//        Map<String, Date> weekDate = DateTimeUtil.getWeekDate(new Date());
+//        List<String> strings = DateTimeUtil.printDay(weekDate.get("start"), weekDate.get("end"));
+//        System.out.println(strings);
+//        System.out.println(weekDate);
+//        Map<String, Date> monthDate = DateTimeUtil.getMonthDate(new Date());
+//        System.out.println(monthDate);
+//        String s="{" +
+//                "\"out_trade_no\":\"20171115010101001\"," +// 可以随机生成订单号：String outTradeNo = UUID.randomUUID().toString().replace("-", "");
+//                "\"total_amount\":0.01," +
+//                "\"subject\":\"Iphone616G\"," +
+//                "\"buyer_id\":\"用户pid\"" + // 小程序支付场景中该参数必传
+//                "}";
+//        System.out.println(s);
+        String num="18.64";
+        double v = Double.parseDouble(num);
+        System.out.println(v);
+
+
     }
 }
 

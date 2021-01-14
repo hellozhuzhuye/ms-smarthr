@@ -27,7 +27,7 @@ spring:
       request-timeout: 10000
 
 server:
-  port: 8262
+  port: 8081
   compression:
     enabled: true
 fastdfs:
@@ -48,3 +48,9 @@ aliyun:
     dir:
       prefix: cloud/   # 上传文件夹路径前缀
 
+mybatis:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: false
