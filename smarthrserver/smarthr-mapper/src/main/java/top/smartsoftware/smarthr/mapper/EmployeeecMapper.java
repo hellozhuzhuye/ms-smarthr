@@ -1,17 +1,17 @@
 package top.smartsoftware.smarthr.mapper;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Param;
+import top.smartsoftware.smarthr.model.Employee;
 import top.smartsoftware.smarthr.model.Employeeec;
+import top.smartsoftware.smarthr.model.vo.EmpEcVO;
 
-public interface EmployeeecMapper {
-    int deleteByPrimaryKey(Integer id);
+import java.util.Date;
+import java.util.List;
 
-    int insert(Employeeec record);
+public interface EmployeeecMapper extends BaseMapper<Employeeec> {
 
-    int insertSelective(Employeeec record);
+    List<EmpEcVO> getAllEmpEcs(@Param("employee") Employee employee, @Param("beginDateScope") Date[] beginDateScope);
 
-    Employeeec selectByPrimaryKey(Integer id);
 
-    int updateByPrimaryKeySelective(Employeeec record);
-
-    int updateByPrimaryKey(Employeeec record);
 }

@@ -1,7 +1,10 @@
 package top.smartsoftware.smarthr.model;
 
+import com.baomidou.mybatisplus.annotation.TableName;
+
 import java.util.Date;
 
+@TableName("employee_ec")
 public class Employeeec {
     private Integer id;
 

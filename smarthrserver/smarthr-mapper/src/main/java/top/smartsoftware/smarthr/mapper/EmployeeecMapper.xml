@@ -13,105 +13,44 @@
   <sql id="Base_Column_List" >
     id, eid, ecid, beforePoint, afterPoint, ecDate, remark
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select 
-    <include refid="Base_Column_List" />
-    from employee_ec
-    where id = #{id,jdbcType=INTEGER}
+  <select id="getAllEmpEcs" resultMap="EmpEcVOMap">
+      SELECT
+          ee.id,
+          e.workID,
+          e.`name`,
+          er.ecType,
+          er.ecPoint,
+          er.ecReason,
+          ee.beforePoint,
+          ee.afterPoint,
+          ee.ecDate,
+          ee.remark
+      FROM
+          `employee_ec` ee
+      JOIN ec_rule er ON ee.ecid = er.id
+      JOIN employee e ON ee.eid = e.id
+      WHERE 1=1
+    <if test="employee.name !=null and employee.name!=''">
+      and e.name like concat('%',#{employee.name},'%')
+    </if>
+    <if test="employee.id !=null and employee.id!=''">
+      and e.id=#{employee.id}
+    </if>
+    <if test="beginDateScope !=null">
+      and ee.ecDate between #{beginDateScope[0]} and #{beginDateScope[1]}
+    </if>
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
-    delete from employee_ec
-    where id = #{id,jdbcType=INTEGER}
-  </delete>
-  <insert id="insert" parameterType="top.smartsoftware.smarthr.model.Employeeec" >
-    insert into employee_ec (id, eid, ecDate,
-      ecReason, ecPoint, ecType, 
-      remark)
-    values (#{id,jdbcType=INTEGER}, #{eid,jdbcType=INTEGER}, #{ecdate,jdbcType=DATE}, 
-      #{ecreason,jdbcType=VARCHAR}, #{ecpoint,jdbcType=INTEGER}, #{ectype,jdbcType=INTEGER}, 
-      #{remark,jdbcType=VARCHAR})
-  </insert>
-  <insert id="insertSelective" parameterType="top.smartsoftware.smarthr.model.Employeeec" >
-    insert into employee_ec
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        id,
-      </if>
-      <if test="eid != null" >
-        eid,
-      </if>
-      <if test="ecdate != null" >
-        ecDate,
-      </if>
-      <if test="ecreason != null" >
-        ecReason,
-      </if>
-      <if test="ecpoint != null" >
-        ecPoint,
-      </if>
-      <if test="ectype != null" >
-        ecType,
-      </if>
-      <if test="remark != null" >
-        remark,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        #{id,jdbcType=INTEGER},
-      </if>
-      <if test="eid != null" >
-        #{eid,jdbcType=INTEGER},
-      </if>
-      <if test="ecdate != null" >
-        #{ecdate,jdbcType=DATE},
-      </if>
-      <if test="ecreason != null" >
-        #{ecreason,jdbcType=VARCHAR},
-      </if>
-      <if test="ecpoint != null" >
-        #{ecpoint,jdbcType=INTEGER},
-      </if>
-      <if test="ectype != null" >
-        #{ectype,jdbcType=INTEGER},
-      </if>
-      <if test="remark != null" >
-        #{remark,jdbcType=VARCHAR},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="top.smartsoftware.smarthr.model.Employeeec" >
-    update employee_ec
-    <set >
-      <if test="eid != null" >
-        eid = #{eid,jdbcType=INTEGER},
-      </if>
-      <if test="ecdate != null" >
-        ecDate = #{ecdate,jdbcType=DATE},
-      </if>
-      <if test="ecreason != null" >
-        ecReason = #{ecreason,jdbcType=VARCHAR},
-      </if>
-      <if test="ecpoint != null" >
-        ecPoint = #{ecpoint,jdbcType=INTEGER},
-      </if>
-      <if test="ectype != null" >
-        ecType = #{ectype,jdbcType=INTEGER},
-      </if>
-      <if test="remark != null" >
-        remark = #{remark,jdbcType=VARCHAR},
-      </if>
-    </set>
-    where id = #{id,jdbcType=INTEGER}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="top.smartsoftware.smarthr.model.Employeeec" >
-    update employee_ec
-    set eid = #{eid,jdbcType=INTEGER},
-      ecDate = #{ecdate,jdbcType=DATE},
-      ecReason = #{ecreason,jdbcType=VARCHAR},
-      ecPoint = #{ecpoint,jdbcType=INTEGER},
-      ecType = #{ectype,jdbcType=INTEGER},
-      remark = #{remark,jdbcType=VARCHAR}
-    where id = #{id,jdbcType=INTEGER}
-  </update>
+  <resultMap id="EmpEcVOMap" type="top.smartsoftware.smarthr.model.vo.EmpEcVO">
+    <result column="id" property="id" jdbcType="INTEGER" />
+    <result column="workID" property="workID" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="ecType" property="ecType" jdbcType="INTEGER" />
+    <result column="ecPoint" property="ecPoint" jdbcType="INTEGER" />
+    <result column="ecReason" property="ecReason" jdbcType="VARCHAR" />
+    <result column="beforePoint" property="beforePoint" jdbcType="INTEGER" />
+    <result column="afterPoint" property="afterPoint" jdbcType="INTEGER" />
+    <result column="ecDate" property="ecDate" jdbcType="DATE" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+  </resultMap>
+
 </mapper>
