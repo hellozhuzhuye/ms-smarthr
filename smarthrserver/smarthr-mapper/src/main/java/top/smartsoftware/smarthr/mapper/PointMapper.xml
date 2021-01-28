@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="top.smartsoftware.smarthr.mapper.PointMapper" >
+
+    <select id="getAllPoints" resultMap="EmpPointMap">
+    SELECT
+        ep.id,
+        e.id eid,
+        e.workID,
+        e.name,
+        ep.point
+    FROM
+        employee_point ep
+    JOIN employee e ON ep.eid = e.id
+    WHERE 1=1
+    <if test="name !=null and name!=''">
+        and e.name like concat('%',#{name},'%')
+    </if>
+    </select>
+    <resultMap id="EmpPointMap" type="top.smartsoftware.smarthr.model.vo.EmpPointVO">
+        <result column="id" property="id" jdbcType="INTEGER"/>
+        <result column="eid" property="eid" jdbcType="INTEGER"/>
+        <result column="workID" property="workID" jdbcType="VARCHAR" />
+        <result column="name" property="name" jdbcType="VARCHAR" />
+        <result column="point" property="point" jdbcType="VARCHAR" />
+    </resultMap>
+</mapper>
