@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="top.smartsoftware.smarthr.mapper.EmployeetrainMapper" >
-  <resultMap id="BaseResultMap" type="top.smartsoftware.smarthr.model.Employeetrain" >
+<mapper namespace="top.smartsoftware.smarthr.mapper.EmployeeTrainMapper" >
+  <resultMap id="BaseResultMap" type="top.smartsoftware.smarthr.model.EmployeeTrain" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="eid" property="eid" jdbcType="INTEGER" />
-    <result column="trainDate" property="traindate" jdbcType="DATE" />
-    <result column="trainContent" property="traincontent" jdbcType="VARCHAR" />
+    <result column="trainDate" property="trainDate" jdbcType="DATE" />
+    <result column="trainContent" property="trainContent" jdbcType="VARCHAR" />
     <result column="remark" property="remark" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
@@ -17,17 +17,34 @@
     from employee_train
     where id = #{id,jdbcType=INTEGER}
   </select>
+  <select id="getAllEmpTrain" resultType="top.smartsoftware.smarthr.model.vo.EmployeeTrainVO">
+    SELECT
+	et.id,
+	e.id eid,
+	e.workID,
+	e.name,
+	et.trainDate,
+	et.trainContent,
+	et.remark
+    FROM
+	employee_train et
+	JOIN employee e ON et.eid = e.id
+	<if test="name!=null and name != ''">
+      WHERE
+      e.name like concat('%',#{name},'%')
+    </if>
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from employee_train
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="top.smartsoftware.smarthr.model.Employeetrain" >
+  <insert id="insert" parameterType="top.smartsoftware.smarthr.model.EmployeeTrain" >
     insert into employee_train (id, eid, trainDate, 
       trainContent, remark)
-    values (#{id,jdbcType=INTEGER}, #{eid,jdbcType=INTEGER}, #{traindate,jdbcType=DATE}, 
-      #{traincontent,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR})
+    values (#{id,jdbcType=INTEGER}, #{eid,jdbcType=INTEGER}, #{trainDate,jdbcType=DATE}, 
+      #{trainContent,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="top.smartsoftware.smarthr.model.Employeetrain" >
+  <insert id="insertSelective" parameterType="top.smartsoftware.smarthr.model.EmployeeTrain" >
     insert into employee_train
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -36,10 +53,10 @@
       <if test="eid != null" >
         eid,
       </if>
-      <if test="traindate != null" >
+      <if test="trainDate != null" >
         trainDate,
       </if>
-      <if test="traincontent != null" >
+      <if test="trainContent != null" >
         trainContent,
       </if>
       <if test="remark != null" >
@@ -53,28 +70,28 @@
       <if test="eid != null" >
         #{eid,jdbcType=INTEGER},
       </if>
-      <if test="traindate != null" >
-        #{traindate,jdbcType=DATE},
+      <if test="trainDate != null" >
+        #{trainDate,jdbcType=DATE},
       </if>
-      <if test="traincontent != null" >
-        #{traincontent,jdbcType=VARCHAR},
+      <if test="trainContent != null" >
+        #{trainContent,jdbcType=VARCHAR},
       </if>
       <if test="remark != null" >
         #{remark,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="top.smartsoftware.smarthr.model.Employeetrain" >
+  <update id="updateByPrimaryKeySelective" parameterType="top.smartsoftware.smarthr.model.EmployeeTrain" >
     update employee_train
     <set >
       <if test="eid != null" >
         eid = #{eid,jdbcType=INTEGER},
       </if>
-      <if test="traindate != null" >
-        trainDate = #{traindate,jdbcType=DATE},
+      <if test="trainDate != null" >
+        trainDate = #{trainDate,jdbcType=DATE},
       </if>
-      <if test="traincontent != null" >
-        trainContent = #{traincontent,jdbcType=VARCHAR},
+      <if test="trainContent != null" >
+        trainContent = #{trainContent,jdbcType=VARCHAR},
       </if>
       <if test="remark != null" >
         remark = #{remark,jdbcType=VARCHAR},
@@ -82,11 +99,11 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="top.smartsoftware.smarthr.model.Employeetrain" >
+  <update id="updateByPrimaryKey" parameterType="top.smartsoftware.smarthr.model.EmployeeTrain" >
     update employee_train
     set eid = #{eid,jdbcType=INTEGER},
-      trainDate = #{traindate,jdbcType=DATE},
-      trainContent = #{traincontent,jdbcType=VARCHAR},
+      trainDate = #{trainDate,jdbcType=DATE},
+      trainContent = #{trainContent,jdbcType=VARCHAR},
       remark = #{remark,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
