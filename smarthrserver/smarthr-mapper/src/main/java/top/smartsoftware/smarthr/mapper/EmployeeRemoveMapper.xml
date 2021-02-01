@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.smartsoftware.smarthr.mapper.EmployeeRemoveMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="top.smartsoftware.smarthr.model.EmployeeRemove">
+        <id column="id" property="id" />
+        <result column="eid" property="eid" />
+        <result column="beforeDepId" property="beforeDepId" />
+        <result column="beforeJobId" property="beforeJobId" />
+        <result column="afterDepId" property="afterDepId" />
+        <result column="afterJobId" property="afterJobId" />
+        <result column="removeDate" property="removeDate" />
+        <result column="reason" property="reason" />
+        <result column="remark" property="remark" />
+    </resultMap>
+    <select id="getAllEmpRemove" resultType="top.smartsoftware.smarthr.model.vo.EmployeeRemoveVO">
+        SELECT
+        er.id,
+        e.id eid,
+        e.workID,
+        e.`name` ename,
+        od.name dbeforename,
+        op.name pbeforename,
+        nd.`name` daftername,
+        np.NAME paftername,
+        er.reason,
+        er.removeDate,
+        er.remark
+        FROM
+        `employee_remove` er
+        LEFT JOIN employee e ON er.eid = e.id
+        LEFT JOIN department od ON er.beforeDepId = od.id
+        LEFT JOIN department nd ON er.afterDepId = nd.id
+        LEFT JOIN position op ON er.beforeJobId = op.id
+        LEFT JOIN position np ON er.afterJobId = np.id
+        <if test="name!=null and name != ''">
+        WHERE e.name like concat('%',#{name},'%')
+        </if>
+    </select>
+
+</mapper>

@@ -6,7 +6,7 @@ package top.smartsoftware.smarthr.model;
  * @Date 2021-01-15
  */
 public class EmployeePoint {
-    private int id;
+    private Integer id;
     private int eid;
     private int point;
 

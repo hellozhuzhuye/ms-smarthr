@@ -12,9 +12,9 @@
     FROM
         employee_point ep
     JOIN employee e ON ep.eid = e.id
-    WHERE 1=1
+
     <if test="name !=null and name!=''">
-        and e.name like concat('%',#{name},'%')
+        WHERE e.name like concat('%',#{name},'%')
     </if>
     </select>
     <resultMap id="EmpPointMap" type="top.smartsoftware.smarthr.model.vo.EmpPointVO">

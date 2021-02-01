@@ -10,7 +10,7 @@ import java.util.Date;
  * @Date 2021-01-12
  */
 public class Attendance {
-    private int id;
+    private Integer id;
     private int eid;
     private String date;
     private String weekOfDay;

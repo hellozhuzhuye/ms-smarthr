@@ -8,13 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import top.smartsoftware.smarthr.mapper.EmpSalaryMapper;
 import top.smartsoftware.smarthr.mapper.EmployeeMapper;
-import top.smartsoftware.smarthr.model.Employee;
-import top.smartsoftware.smarthr.model.MailConstants;
-import top.smartsoftware.smarthr.model.MailSendLog;
-import top.smartsoftware.smarthr.model.RespPageBean;
+import top.smartsoftware.smarthr.mapper.EmployeeRemoveMapper;
+import top.smartsoftware.smarthr.model.*;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -32,6 +31,8 @@ public class EmployeeService {
     RabbitTemplate rabbitTemplate;
     @Autowired
     EmpSalaryMapper empSalaryMapper;
+    @Autowired
+    EmployeeRemoveMapper employeeRemoveMapper;
     @Autowired
     MailSendLogService mailSendLogService;
     public final static Logger logger = LoggerFactory.getLogger(EmployeeService.class);
@@ -84,6 +85,21 @@ public class EmployeeService {
     }
 
     public Integer updateEmp(Employee employee) {
+        Employee oldEmp = employeeMapper.selectByPrimaryKey(employee.getId());
+        Integer oldDepartmentId = oldEmp.getDepartmentId();
+        Integer oldEmpPosId = oldEmp.getPosId();
+        Integer departmentId = employee.getDepartmentId();
+        Integer posId = employee.getPosId();
+        if(!oldDepartmentId.equals(departmentId) || !oldEmpPosId.equals(posId)){
+            EmployeeRemove employeeRemove = new EmployeeRemove();
+            employeeRemove.setEid(employee.getId());
+            employeeRemove.setBeforeDepId(oldDepartmentId);
+            employeeRemove.setBeforeJobId(oldEmpPosId);
+            employeeRemove.setAfterDepId(departmentId);
+            employeeRemove.setAfterJobId(posId);
+            employeeRemove.setRemoveDate(LocalDate.now());
+            employeeRemoveMapper.insert(employeeRemove);
+        }
         return employeeMapper.updateByPrimaryKeySelective(employee);
     }
 

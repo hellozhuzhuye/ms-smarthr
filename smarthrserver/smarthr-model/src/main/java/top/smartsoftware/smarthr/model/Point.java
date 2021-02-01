@@ -9,7 +9,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
  */
 @TableName("employee_point")
 public class Point {
-    private int id;
+    private Integer id;
     private int eid;
     private String point;
 

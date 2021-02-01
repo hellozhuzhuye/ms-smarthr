@@ -6,7 +6,7 @@ package top.smartsoftware.smarthr.model;
  * @Date 2021-01-13
  */
 public class EcRule {
-    private int id;
+    private Integer id;
     private int ecType;
     private int ecPoint;
     private String ecReason;
