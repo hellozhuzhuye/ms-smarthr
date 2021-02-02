@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.smartsoftware.smarthr.mapper.EmployeeEvaluationMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="top.smartsoftware.smarthr.model.entity.EmployeeEvaluation">
+        <id column="id" property="id" />
+        <result column="eid" property="eid" />
+        <result column="date" property="date" />
+        <result column="content" property="content" />
+        <result column="result" property="result" />
+        <result column="remark" property="remark" />
+    </resultMap>
+    <select id="getAllEmpEval" resultType="top.smartsoftware.smarthr.model.vo.EmployeeEvaluationVO">
+    SELECT
+        e.workID,
+        e.`name`,
+        ee.*
+    FROM
+        employee_evaluation ee
+        LEFT JOIN employee e ON ee.eid = e.id
+    <if test="name!=null and name != ''">
+        WHERE name like concat('%',#{name},'%')
+    </if>
+    </select>
+
+</mapper>
