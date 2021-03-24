@@ -5,6 +5,7 @@ package top.smartsoftware.smarthr.controller.cloud;
  * @Author xjx
  * @Date 2020-12-19
  */
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -49,8 +50,8 @@ public class OssController {
     }
 
     @RequestMapping(value = "/renameObject", method = RequestMethod.GET)
-    public RespBean renameObject(String sourceObjectName,String destinationObjectName) {
-        ossService.renameObject(sourceObjectName,destinationObjectName);
+    public RespBean renameObject(String sourceObjectName, String destinationObjectName) {
+        ossService.renameObject(sourceObjectName, destinationObjectName);
         return RespBean.ok();
     }
 
@@ -62,14 +63,14 @@ public class OssController {
 
 
     @RequestMapping(value = "/getObjectList", method = RequestMethod.GET)
-    public RespBean getObjectList(String objectName) throws ParseException, IOException {
+    public RespBean getObjectList(String objectName) throws IOException {
         List<OSSObjectVO> objectList = ossService.getObjectList(objectName);
         return RespBean.ok(objectList);
     }
 
     @RequestMapping(value = "/signUrl", method = RequestMethod.GET)
-    public RespBean signUrl(String objectName,Integer expirationHours) {
-        String signUrl = ossService.signUrl(objectName,expirationHours);
+    public RespBean signUrl(String objectName, Integer expirationHours) {
+        String signUrl = ossService.signUrl(objectName, expirationHours);
         return RespBean.ok((Object) signUrl);
     }
 

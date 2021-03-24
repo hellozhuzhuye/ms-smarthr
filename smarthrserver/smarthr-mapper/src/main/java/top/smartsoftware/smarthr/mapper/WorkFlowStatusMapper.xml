@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.smartsoftware.smarthr.mapper.WorkFlowStatusMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="top.smartsoftware.smarthr.model.entity.WorkFlowStatus">
+        <id column="id" property="id" />
+        <result column="wfid" property="wfid" />
+        <result column="hrid" property="hrid" />
+        <result column="status" property="status" />
+        <result column="content" property="content" />
+        <result column="priority" property="priority" />
+        <result column="approveTime" property="approveTime" />
+    </resultMap>
+    <select id="getDetailApply" resultType="top.smartsoftware.smarthr.model.vo.MyApplyDetailVO">
+    SELECT
+        wft.id,
+        hr.`name` as hrName,
+        wft.`status`,
+        wft.content,
+        wft.priority,
+        wft.approveTime
+    FROM
+        work_flow_status wft
+        LEFT JOIN hr ON wft.hrid = hr.id
+    WHERE
+        wfid = #{wfid}
+    </select>
+    <select id="getApprove" resultType="top.smartsoftware.smarthr.model.vo.ApproveVO">
+    SELECT
+        wfs.id,
+        wf.eid,
+        hr.`name`,
+        wft.typeName,
+        wf.content,
+        wf.selectDateTime,
+        wf.url,
+        wf.createTime,
+        wfs.`status`,
+        wfs.content AS approveContent,
+        wfs.approveTime
+    FROM
+        `work_flow_status` wfs
+        LEFT JOIN work_flow wf ON wfs.wfid = wf.id
+        LEFT JOIN hr ON wf.eid = hr.id
+        LEFT JOIN work_flow_type wft ON wf.workFlowTypeId = wft.id
+    WHERE
+        wfs.hrid = #{id}
+    </select>
+
+</mapper>

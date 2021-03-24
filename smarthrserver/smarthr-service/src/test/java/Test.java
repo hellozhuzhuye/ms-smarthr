@@ -42,7 +42,7 @@ public class Test {
                 //生成后是否立即打开目录
                 .openOutputDir(true)
                 //文件类型 有HTML、WORD、MD三种枚举选择
-                .fileType(EngineFileType.HTML)
+                .fileType(EngineFileType.WORD)
                 //生成模板实现
                 .produceType(EngineTemplateType.freemarker).build();
 

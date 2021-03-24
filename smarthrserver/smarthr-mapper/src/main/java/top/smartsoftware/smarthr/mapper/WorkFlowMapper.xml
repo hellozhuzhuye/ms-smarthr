@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.smartsoftware.smarthr.mapper.WorkFlowMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="top.smartsoftware.smarthr.model.entity.WorkFlow">
+        <id column="id" property="id" />
+        <result column="eid" property="eid" />
+        <result column="workFlowTypeId" property="workFlowTypeId" />
+        <result column="hrid" property="hrid" />
+        <result column="content" property="content" />
+        <result column="selectDateTime" property="selectDateTime" />
+        <result column="url" property="url" />
+        <result column="createTime" property="createTime" />
+    </resultMap>
+    <select id="queryMyApply" resultType="top.smartsoftware.smarthr.model.vo.MyApplyVO">
+    SELECT
+        wf.id,
+        wft.typeName as applyTypeName,
+        wf.content,
+        wf.hrid,
+        wf.createTime
+    FROM
+        `work_flow` wf
+        LEFT JOIN work_flow_type wft ON wf.workFlowTypeId = wft.id
+    WHERE
+        eid =#{eid}
+    </select>
+
+</mapper>

@@ -53,7 +53,7 @@ public class OssService {
     /**
      * 签名生成
      */
-
+    @CacheEvict(allEntries = true)
     public OssPolicyResult policy(String dir) {
         OssPolicyResult result = new OssPolicyResult();
         // 存储目录
@@ -149,7 +149,6 @@ public class OssService {
 
     @CacheEvict(allEntries = true)
     public void deleteObject(String delObject) {
-
         if (delObject.endsWith("/")) {
             // 列举所有包含指定前缀的文件并删除。
             String nextMarker = null;
