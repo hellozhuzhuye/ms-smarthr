@@ -59,8 +59,10 @@ public class OssService {
         // 存储目录
         //SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
         //String dir = ossConfig.getALIYUN_OSS_DIR_PREFIX() + sdf.format(new Date());
-        if (dir.endsWith("/")) {
-            dir = dir.substring(0, dir.length() - 1);
+        if (!"/".equals(dir)){
+            if (dir.endsWith("/")) {
+                dir = dir.substring(0, dir.length() - 1);
+            }
         }
         // 签名有效期
         long expireEndTime = System.currentTimeMillis() + ossConfig.getALIYUN_OSS_EXPIRE() * 1000;
@@ -77,7 +79,7 @@ public class OssService {
         try {
             PolicyConditions policyConds = new PolicyConditions();
             policyConds.addConditionItem(PolicyConditions.COND_CONTENT_LENGTH_RANGE, 0, maxSize);
-            policyConds.addConditionItem(MatchMode.StartWith, PolicyConditions.COND_KEY, dir);
+            policyConds.addConditionItem(MatchMode.StartWith, PolicyConditions.COND_KEY, ossConfig.getALIYUN_OSS_DIR_PREFIX()+dir);
             String postPolicy = ossClient.generatePostPolicy(expiration, policyConds);
             byte[] binaryData = postPolicy.getBytes("utf-8");
             String policy = BinaryUtil.toBase64String(binaryData);
@@ -87,7 +89,7 @@ public class OssService {
             result.setAccessKeyId(ossClient.getCredentialsProvider().getCredentials().getAccessKeyId());
             result.setPolicy(policy);
             result.setSignature(signature);
-            result.setDir(dir);
+            result.setDir(ossConfig.getALIYUN_OSS_DIR_PREFIX()+dir);
             result.setCallback(callbackData);
             result.setHost(action);
         } catch (Exception e) {
@@ -100,14 +102,14 @@ public class OssService {
         ListObjectsRequest listObjectsRequest = new ListObjectsRequest(ossConfig.getALIYUN_OSS_BUCKET_NAME());
         listObjectsRequest.setDelimiter("/");
         if (objectName != null && !"".equals(objectName)) {
-            listObjectsRequest.setPrefix(objectName);
+            listObjectsRequest.setPrefix(ossConfig.getALIYUN_OSS_DIR_PREFIX()+objectName);
         }
         ObjectListing listing = ossClient.listObjects(listObjectsRequest);
         List<OSSObjectVO> ossObjectVOList = new ArrayList<>();
         for (String commonPrefix : listing.getCommonPrefixes()) {
             String substring = commonPrefix;
             if (objectName != null && !"".equals(objectName)) {
-                substring = commonPrefix.substring(objectName.length());
+                substring = commonPrefix.substring(ossConfig.getALIYUN_OSS_DIR_PREFIX().length()+objectName.length());
             }
             OSSObjectVO ossObjectVO = new OSSObjectVO(substring);
             ossObjectVOList.add(ossObjectVO);
@@ -118,7 +120,7 @@ public class OssService {
             Integer iconCode = MimeTypeUtil.toIconCode(contentType);
             String substring = objectSummary.getKey();
             if (objectName != null && !"".equals(objectName)) {
-                substring = objectSummary.getKey().substring(objectName.length());
+                substring = objectSummary.getKey().substring(ossConfig.getALIYUN_OSS_DIR_PREFIX().length()+objectName.length());
             }
             if (substring != null && !"".equals(substring)) {
                 ossObjectVO.setKey(substring);
@@ -137,11 +139,11 @@ public class OssService {
 
     public String signUrl(String objectName, Integer expirationHours) {
         Date expiration = new Date(new Date().getTime() + 3600 * expirationHours * 1000);
-        GeneratePresignedUrlRequest request = new GeneratePresignedUrlRequest(ossConfig.getALIYUN_OSS_BUCKET_NAME(), objectName, HttpMethod.GET);
+        GeneratePresignedUrlRequest request = new GeneratePresignedUrlRequest(ossConfig.getALIYUN_OSS_BUCKET_NAME(), ossConfig.getALIYUN_OSS_DIR_PREFIX()+objectName, HttpMethod.GET);
         request.setExpiration(expiration);
         URL signedUrl = ossClient.generatePresignedUrl(request);
         System.out.println("signed url for getObject: " + signedUrl);
-        String key = objectName + "_" + DateTimeUtil.getCurDateTime() + "_" + expirationHours;
+        String key = ossConfig.getALIYUN_OSS_DIR_PREFIX()+objectName + "_" + DateTimeUtil.getCurDateTime() + "_" + expirationHours;
         redisTemplate.opsForValue().set(key, signedUrl, expirationHours, TimeUnit.HOURS);
         return signedUrl.toString();
     }
@@ -149,6 +151,7 @@ public class OssService {
 
     @CacheEvict(allEntries = true)
     public void deleteObject(String delObject) {
+        delObject=ossConfig.getALIYUN_OSS_DIR_PREFIX()+delObject;
         if (delObject.endsWith("/")) {
             // 列举所有包含指定前缀的文件并删除。
             String nextMarker = null;
@@ -209,6 +212,8 @@ public class OssService {
 
     @CacheEvict(allEntries = true)
     public void renameObject(String sourceObjectName, String destinationObjectName) {
+        sourceObjectName=ossConfig.getALIYUN_OSS_DIR_PREFIX()+sourceObjectName;
+        destinationObjectName=ossConfig.getALIYUN_OSS_DIR_PREFIX()+destinationObjectName;
         // 重命名=先拷贝再删除
         CopyObjectResult result = ossClient.copyObject(ossConfig.getALIYUN_OSS_BUCKET_NAME(), sourceObjectName, ossConfig.getALIYUN_OSS_BUCKET_NAME(), destinationObjectName);
         if (result != null) {
@@ -222,7 +227,7 @@ public class OssService {
             newFolderName += "/";
         }
         String content = "Hello OSS";
-        PutObjectRequest putObjectRequest = new PutObjectRequest(ossConfig.getALIYUN_OSS_BUCKET_NAME(), newFolderName, new ByteArrayInputStream(content.getBytes()));
+        PutObjectRequest putObjectRequest = new PutObjectRequest(ossConfig.getALIYUN_OSS_BUCKET_NAME(), ossConfig.getALIYUN_OSS_DIR_PREFIX()+newFolderName, new ByteArrayInputStream(content.getBytes()));
         ossClient.putObject(putObjectRequest);
     }
 }

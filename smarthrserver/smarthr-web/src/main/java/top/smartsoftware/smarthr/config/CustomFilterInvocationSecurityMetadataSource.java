@@ -25,18 +25,18 @@ public class CustomFilterInvocationSecurityMetadataSource implements FilterInvoc
     @Autowired
     MenuService menuService;
 
-    AntPathMatcher antPathMatcher=new AntPathMatcher();
+    AntPathMatcher antPathMatcher = new AntPathMatcher();
 
     @Override
     public Collection<ConfigAttribute> getAttributes(Object o) throws IllegalArgumentException {
-        String requestUrl=((FilterInvocation)o).getRequestUrl();
+        String requestUrl = ((FilterInvocation) o).getRequestUrl();
         List<Menu> menus = menuService.getAllMenusWithRole();
         for (Menu m : menus) {
-            if (antPathMatcher.match(m.getUrl(),requestUrl)){
+            if (antPathMatcher.match(m.getUrl(), requestUrl)) {
                 List<Role> roles = m.getRoles();
                 String[] strings = new String[roles.size()];
                 for (int i = 0; i < strings.length; i++) {
-                    strings[i]=roles.get(i).getName();
+                    strings[i] = roles.get(i).getName();
                 }
                 return SecurityConfig.createList(strings);
             }

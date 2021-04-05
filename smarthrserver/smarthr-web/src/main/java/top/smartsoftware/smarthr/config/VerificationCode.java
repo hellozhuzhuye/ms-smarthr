@@ -23,7 +23,7 @@ public class VerificationCode {
     private String text;// 记录随机字符串
 
     /**
-     * 获取一个随意颜色
+     * 获取一个随机颜色
      *
      * @return
      */

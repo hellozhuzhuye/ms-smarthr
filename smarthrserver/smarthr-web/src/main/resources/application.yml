@@ -11,10 +11,10 @@ spring:
     publisher-returns: true
     publisher-confirm-type: correlated
   redis:
-    host: 127.0.0.1
+    host: 47.112.105.123
     database: 0
     port: 6379
-    password:
+    password: 74110asd123.
     timeout: 60s
     lettuce:
       cluster:
@@ -57,7 +57,7 @@ aliyun:
     maxSize: 500 # 上传文件大小(M)
     callback: http://hr.smartsoftware.top/aliyun/oss/callback # 文件上传成功后的回调地址
     dir:
-      prefix: cloud/   # 上传文件夹路径前缀
+      prefix: cloud   # 上传文件夹路径前缀
 
 
 mybatis-plus:

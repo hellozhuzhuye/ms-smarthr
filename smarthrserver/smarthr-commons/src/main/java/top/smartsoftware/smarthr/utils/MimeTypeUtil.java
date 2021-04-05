@@ -66,6 +66,8 @@ public class MimeTypeUtil {
             return "rar";
         } else if (fileName.endsWith(".js")) {
             return "javascript";
+        } else if(fileName.endsWith(".swf")){
+            return "application/x-shockwave-flash";
         }
         File file = new File(fileName);
         String result = Files.probeContentType(Paths.get(file.toURI()));

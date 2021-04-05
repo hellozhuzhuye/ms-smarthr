@@ -10,6 +10,12 @@
     <result column="allSalary" property="allSalary" jdbcType="INTEGER"/>
     <result column="pensionBase" property="pensionBase" jdbcType="INTEGER"/>
     <result column="pensionPer" property="pensionPer" jdbcType="REAL"/>
+    <result column="unemployBase" property="unemployBase" jdbcType="INTEGER"/>
+    <result column="unemployBasePer" property="unemployBasePer" jdbcType="REAL"/>
+    <result column="jobInjuryBase" property="jobInjuryBase" jdbcType="INTEGER"/>
+    <result column="jobInjuryPer" property="jobInjuryPer" jdbcType="REAL"/>
+    <result column="birthBase" property="birthBase" jdbcType="INTEGER"/>
+    <result column="birthPer" property="birthPer" jdbcType="REAL"/>
     <result column="createDate" property="createDate" jdbcType="TIMESTAMP"/>
     <result column="medicalBase" property="medicalBase" jdbcType="INTEGER"/>
     <result column="medicalPer" property="medicalPer" jdbcType="REAL"/>
@@ -23,13 +29,13 @@
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
-    <include refid="Base_Column_List" />
+    *
     from salary
     where id = #{id,jdbcType=INTEGER}
   </select>
   <select id="getAllSalaries" resultMap="BaseResultMap">
     select
-    <include refid="Base_Column_List"/>
+    *
     from salary
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >

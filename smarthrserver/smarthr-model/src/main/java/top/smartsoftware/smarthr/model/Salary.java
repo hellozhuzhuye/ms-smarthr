@@ -21,6 +21,18 @@ public class Salary {
 
     private Float pensionPer;
 
+    private Integer unemployBase;
+
+    private Float unemployBasePer;
+
+    private Integer jobInjuryBase;
+
+    private Float jobInjuryPer;
+
+    private Integer birthBase;
+
+    private Float birthPer;
+
     @JsonFormat(pattern = "yyyy-MM-dd")
     private Date createDate;
 
@@ -144,5 +156,53 @@ public class Salary {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Integer getUnemployBase() {
+        return unemployBase;
+    }
+
+    public void setUnemployBase(Integer unemployBase) {
+        this.unemployBase = unemployBase;
+    }
+
+    public Float getUnemployBasePer() {
+        return unemployBasePer;
+    }
+
+    public void setUnemployBasePer(Float unemployBasePer) {
+        this.unemployBasePer = unemployBasePer;
+    }
+
+    public Integer getJobInjuryBase() {
+        return jobInjuryBase;
+    }
+
+    public void setJobInjuryBase(Integer jobInjuryBase) {
+        this.jobInjuryBase = jobInjuryBase;
+    }
+
+    public Float getJobInjuryPer() {
+        return jobInjuryPer;
+    }
+
+    public void setJobInjuryPer(Float jobInjuryPer) {
+        this.jobInjuryPer = jobInjuryPer;
+    }
+
+    public Integer getBirthBase() {
+        return birthBase;
+    }
+
+    public void setBirthBase(Integer birthBase) {
+        this.birthBase = birthBase;
+    }
+
+    public Float getBirthPer() {
+        return birthPer;
+    }
+
+    public void setBirthPer(Float birthPer) {
+        this.birthPer = birthPer;
     }
 }
