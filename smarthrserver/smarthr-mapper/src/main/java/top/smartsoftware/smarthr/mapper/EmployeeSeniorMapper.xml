@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.smartsoftware.smarthr.mapper.EmployeeSeniorMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="top.smartsoftware.smarthr.model.entity.EmployeeSenior">
+        <id column="id" property="id" />
+        <result column="eid" property="eid" />
+        <result column="bankCardNumber" property="bankCardNumber" />
+        <result column="idCardNumber" property="idCardNumber" />
+        <result column="idCardData" property="idCardData" />
+        <result column="bankCardUrl" property="bankCardUrl" />
+        <result column="idCardUrl" property="idCardUrl" />
+        <result column="createTime" property="createTime" />
+        <result column="updateTime" property="updateTime" />
+    </resultMap>
+
+</mapper>

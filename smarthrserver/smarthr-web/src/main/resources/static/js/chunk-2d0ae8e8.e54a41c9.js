@@ -1,0 +1,2 @@
+(window["webpackJsonp"]=window["webpackJsonp"]||[]).push([["chunk-2d0ae8e8"],{"0b22":function(e,n,o){var r={"./StaAll.vue":"0aaf","./StaPers.vue":"b419","./StaPoint.vue":"43d7","./StaRecord.vue":"a49a"};function t(e){var n=a(e);return o(n)}function a(e){if(!o.o(r,e)){var n=new Error("Cannot find module '"+e+"'");throw n.code="MODULE_NOT_FOUND",n}return r[e]}t.keys=function(){return Object.keys(r)},t.resolve=a,e.exports=t,t.id="0b22"}}]);
+//# sourceMappingURL=chunk-2d0ae8e8.e54a41c9.js.map

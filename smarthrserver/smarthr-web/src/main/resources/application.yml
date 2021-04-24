@@ -59,7 +59,13 @@ aliyun:
     dir:
       prefix: cloud   # 上传文件夹路径前缀
 
-
+cloudmarket:
+  ocr:
+    appCode: db1a233f30294d4093afa7ce51b19440
+    appKey: 203931139
+    appSecret: jp2PhssBxgYe0m4sihD69nkpgfXo1IIa
+    idCardUrl: https://dm-51.data.aliyun.com/rest/160601/ocr/ocr_idcard.json
+    bankCardUrl: https://yhk.market.alicloudapi.com/rest/160601/ocr/ocr_bank_card.json
 mybatis-plus:
   configuration:
     map-underscore-to-camel-case: false

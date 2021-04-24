@@ -6,7 +6,9 @@ package top.smartsoftware.smarthr.service;
  * @Date 2020-12-19
  */
 
+import cn.hutool.json.JSON;
 import cn.hutool.json.JSONUtil;
+import com.alibaba.fastjson.JSONObject;
 import com.aliyun.oss.HttpMethod;
 import com.aliyun.oss.OSSClient;
 import com.aliyun.oss.common.utils.BinaryUtil;
@@ -49,6 +51,9 @@ public class OssService {
 
     @Autowired
     private RedisTemplate redisTemplate;
+
+    @Autowired
+    EmpSeniorService empSeniorService;
 
     /**
      * 签名生成
@@ -97,6 +102,45 @@ public class OssService {
         return result;
     }
 
+    public OssPolicyResult ocrPolicy(String dir) {
+        OssPolicyResult result = new OssPolicyResult();
+        // 存储目录
+        //SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+        //String dir = ossConfig.getALIYUN_OSS_DIR_PREFIX() + sdf.format(new Date());
+
+        // 签名有效期
+        long expireEndTime = System.currentTimeMillis() + ossConfig.getALIYUN_OSS_EXPIRE() * 1000;
+        Date expiration = new Date(expireEndTime);
+        // 文件大小
+        long maxSize = ossConfig.getALIYUN_OSS_MAX_SIZE() * 1024 * 1024;
+        // 回调
+        OssCallbackParam callback = new OssCallbackParam();
+        callback.setCallbackUrl(ossConfig.getALIYUN_OSS_CALLBACK());
+        callback.setCallbackBody("filename=${object}&size=${size}&mimeType=${mimeType}&height=${imageInfo.height}&width=${imageInfo.width}");
+        callback.setCallbackBodyType("application/x-www-form-urlencoded");
+        // 提交节点
+        String action = "http://" + ossConfig.getALIYUN_OSS_BUCKET_NAME() + "." + ossConfig.getALIYUN_SZ_OSS_ENDPOINT();
+        try {
+            PolicyConditions policyConds = new PolicyConditions();
+            policyConds.addConditionItem(PolicyConditions.COND_CONTENT_LENGTH_RANGE, 0, maxSize);
+            policyConds.addConditionItem(MatchMode.StartWith, PolicyConditions.COND_KEY, dir);
+            String postPolicy = ossClient.generatePostPolicy(expiration, policyConds);
+            byte[] binaryData = postPolicy.getBytes("utf-8");
+            String policy = BinaryUtil.toBase64String(binaryData);
+            String signature = ossClient.calculatePostSignature(postPolicy);
+            String callbackData = BinaryUtil.toBase64String(JSONUtil.parse(callback).toString().getBytes("utf-8"));
+            // 返回结果
+            result.setAccessKeyId(ossClient.getCredentialsProvider().getCredentials().getAccessKeyId());
+            result.setPolicy(policy);
+            result.setSignature(signature);
+            result.setDir(dir);
+            result.setCallback(callbackData);
+            result.setHost(action);
+        } catch (Exception e) {
+        }
+        return result;
+    }
+
     @Cacheable
     public List<OSSObjectVO> getObjectList(String objectName) throws IOException {
         ListObjectsRequest listObjectsRequest = new ListObjectsRequest(ossConfig.getALIYUN_OSS_BUCKET_NAME());
@@ -135,6 +179,29 @@ public class OssService {
             }
         }
         return ossObjectVOList;
+    }
+
+    public JSONObject idCardOcrSignUrl(String objectName, Integer expirationHours) {
+        Date expiration = new Date(new Date().getTime() + 3600 * expirationHours * 1000);
+        GeneratePresignedUrlRequest request = new GeneratePresignedUrlRequest(ossConfig.getALIYUN_OSS_BUCKET_NAME(), objectName, HttpMethod.GET);
+        request.setExpiration(expiration);
+        URL signedUrl = ossClient.generatePresignedUrl(request);
+        System.out.println("signed url for getObject: " + signedUrl);
+        String key = objectName + "_" + DateTimeUtil.getCurDateTime() + "_" + expirationHours;
+        redisTemplate.opsForValue().set(key, signedUrl, expirationHours, TimeUnit.HOURS);
+        String idcardVO = empSeniorService.idCardOcr(signedUrl.toString());
+        return JSONObject.parseObject(idcardVO);
+    }
+    public JSONObject bankCardOcrSignUrl(String objectName, Integer expirationHours) {
+        Date expiration = new Date(new Date().getTime() + 3600 * expirationHours * 1000);
+        GeneratePresignedUrlRequest request = new GeneratePresignedUrlRequest(ossConfig.getALIYUN_OSS_BUCKET_NAME(), objectName, HttpMethod.GET);
+        request.setExpiration(expiration);
+        URL signedUrl = ossClient.generatePresignedUrl(request);
+        System.out.println("signed url for getObject: " + signedUrl);
+        String key = objectName + "_" + DateTimeUtil.getCurDateTime() + "_" + expirationHours;
+        redisTemplate.opsForValue().set(key, signedUrl, expirationHours, TimeUnit.HOURS);
+        String bankCardVO = empSeniorService.bankCardOcr(signedUrl.toString());
+        return JSONObject.parseObject(bankCardVO);
     }
 
     public String signUrl(String objectName, Integer expirationHours) {
@@ -230,5 +297,7 @@ public class OssService {
         PutObjectRequest putObjectRequest = new PutObjectRequest(ossConfig.getALIYUN_OSS_BUCKET_NAME(), ossConfig.getALIYUN_OSS_DIR_PREFIX()+newFolderName, new ByteArrayInputStream(content.getBytes()));
         ossClient.putObject(putObjectRequest);
     }
+
+
 }
 
