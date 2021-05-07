@@ -12,6 +12,7 @@ import top.smartsoftware.smarthr.model.entity.WorkFlowStatus;
 import top.smartsoftware.smarthr.model.vo.ApproveVO;
 import top.smartsoftware.smarthr.model.vo.MyApplyDetailVO;
 import top.smartsoftware.smarthr.model.vo.MyApplyVO;
+import top.smartsoftware.smarthr.service.OperationLogService;
 import top.smartsoftware.smarthr.service.WorkFlowService;
 import top.smartsoftware.smarthr.service.WorkFlowStatusService;
 
@@ -38,6 +39,7 @@ public class WorkFlowController {
         Hr hr = (Hr) authentication.getPrincipal();
         workFlow.setEid(hr.getId());
         if (workFlowService.addWorkFlow(workFlow) == 1) {
+            OperationLogService.insertInsertLog("流程申请:"+workFlow.getContent());
             return RespBean.ok("申请成功!");
         }
         return RespBean.error("申请失败!");
@@ -63,6 +65,7 @@ public class WorkFlowController {
     @GetMapping("/processApproval")
     public RespBean processApproval(Integer id,Integer status,String content) {
         if (workFlowStatusService.processApproval(id,status,content)==1){
+            OperationLogService.insertInsertLog("流程审批:"+content);
             return RespBean.ok();
         }
         return RespBean.error("审批失败");

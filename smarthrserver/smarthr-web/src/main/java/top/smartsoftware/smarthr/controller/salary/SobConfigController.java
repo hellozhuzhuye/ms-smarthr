@@ -6,6 +6,7 @@ import top.smartsoftware.smarthr.model.RespBean;
 import top.smartsoftware.smarthr.model.RespPageBean;
 import top.smartsoftware.smarthr.model.Salary;
 import top.smartsoftware.smarthr.service.EmployeeService;
+import top.smartsoftware.smarthr.service.OperationLogService;
 import top.smartsoftware.smarthr.service.SalaryService;
 
 import java.util.List;
@@ -37,6 +38,7 @@ public class SobConfigController {
     public RespBean updateEmployeeSalaryById(Integer eid, Integer sid) {
         Integer result = employeeService.updateEmployeeSalaryById(eid, sid);
         if (result == 1 || result == 2) {
+            OperationLogService.insertUpdateLog("员工账套:"+eid+","+sid);
             return RespBean.ok("更新成功");
         }
         return RespBean.error("更新失败");

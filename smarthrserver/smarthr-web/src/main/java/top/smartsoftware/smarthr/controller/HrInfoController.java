@@ -10,6 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 import top.smartsoftware.smarthr.model.Hr;
 import top.smartsoftware.smarthr.model.RespBean;
 import top.smartsoftware.smarthr.service.HrService;
+import top.smartsoftware.smarthr.service.OperationLogService;
 
 import java.io.IOException;
 import java.util.Map;
@@ -37,6 +38,7 @@ public class HrInfoController {
     public RespBean updateHr(@RequestBody Hr hr, Authentication authentication) {
         if (hrService.updateHr(hr) == 1) {
             SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(hr, authentication.getCredentials(), authentication.getAuthorities()));
+            OperationLogService.insertUpdateLog("个人信息");
             return RespBean.ok("更新成功!");
         }
         return RespBean.error("更新失败!");
@@ -48,6 +50,7 @@ public class HrInfoController {
         String pass = (String) info.get("pass");
         Integer hrid = (Integer) info.get("hrid");
         if (hrService.updateHrPasswd(oldpass, pass, hrid)) {
+            OperationLogService.insertUpdateLog("登录密码");
             return RespBean.ok("更新成功!");
         }
         return RespBean.error("更新失败!");
@@ -58,6 +61,7 @@ public class HrInfoController {
     public RespBean updateHrUserface(MultipartFile file, Integer id, Authentication authentication) throws IOException {
         String url = hrService.updateUserface(file, id, authentication);
         if (url!=null && url!="") {
+            OperationLogService.insertUpdateLog("头像");
             return RespBean.ok("更新成功!", url);
         }
         return RespBean.error("更新失败!");

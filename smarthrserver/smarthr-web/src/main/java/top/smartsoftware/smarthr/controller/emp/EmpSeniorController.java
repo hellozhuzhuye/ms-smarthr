@@ -3,9 +3,11 @@ package top.smartsoftware.smarthr.controller.emp;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import top.smartsoftware.smarthr.model.OperationLog;
 import top.smartsoftware.smarthr.model.RespBean;
 import top.smartsoftware.smarthr.model.entity.EmployeeSenior;
 import top.smartsoftware.smarthr.service.EmpSeniorService;
+import top.smartsoftware.smarthr.service.OperationLogService;
 
 /**
  * @Description
@@ -27,6 +29,7 @@ public class EmpSeniorController {
     @PostMapping("/addEmpSenior")
     public RespBean addEmpSenior(@RequestBody EmployeeSenior employeeSenior) {
         empSeniorService.addEmpSenior(employeeSenior);
+        OperationLogService.insertLog(new OperationLog("添加了员工高级资料，id为："+employeeSenior.getId(),0));
         return RespBean.ok("添加成功");
     }
 
@@ -49,6 +52,7 @@ public class EmpSeniorController {
     @DeleteMapping("/{id}")
     public RespBean delEmpSenior(@PathVariable String id) {
         empSeniorService.delEmpSenior(id);
+        OperationLogService.insertLog(new OperationLog("删除了员工高级资料，id为："+id,1));
         return RespBean.ok("删除成功");
     }
 }

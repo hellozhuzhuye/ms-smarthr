@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.*;
 import top.smartsoftware.smarthr.service.DepartmentService;
 import top.smartsoftware.smarthr.model.Department;
 import top.smartsoftware.smarthr.model.RespBean;
+import top.smartsoftware.smarthr.service.OperationLogService;
 
 import java.util.List;
 
@@ -28,6 +29,7 @@ public class DepartmentController {
     public RespBean addDep(@RequestBody Department dep) {
         departmentService.addDep(dep);
         if (dep.getResult() == 1) {
+            OperationLogService.insertInsertLog("部门:"+dep.getName());
             return RespBean.ok("添加成功", dep);
         }
         return RespBean.error("添加失败");
@@ -43,6 +45,7 @@ public class DepartmentController {
         } else if (dep.getResult() == -1) {
             return RespBean.error("该部门下有员工，删除失败");
         } else if (dep.getResult() == 1) {
+            OperationLogService.insertDeleteLog("部门:"+id);
             return RespBean.ok("删除成功");
         }
         return RespBean.error("删除失败");

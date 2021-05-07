@@ -4,9 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import top.smartsoftware.smarthr.model.Employee;
 import top.smartsoftware.smarthr.model.Employeeec;
+import top.smartsoftware.smarthr.model.OperationLog;
 import top.smartsoftware.smarthr.model.RespBean;
 import top.smartsoftware.smarthr.model.vo.EmpEcVO;
 import top.smartsoftware.smarthr.service.EmpEcService;
+import top.smartsoftware.smarthr.service.OperationLogService;
 
 import java.util.Date;
 import java.util.List;
@@ -32,6 +34,7 @@ public class EmpEcController {
     public RespBean addEmpEc(@RequestBody Employeeec employeeec) {
 
         if (empEcService.addEmpEc(employeeec) == 1) {
+            OperationLogService.insertLog(new OperationLog("增加了员工奖惩，id为："+employeeec.getId(),0));
             return RespBean.ok("添加成功!");
         }
         return RespBean.error("添加失败!");
@@ -40,6 +43,7 @@ public class EmpEcController {
     @DeleteMapping("/{id}")
     public RespBean deleteEmpEcById(@PathVariable Integer id) {
         if (empEcService.deleteEmpEcById(id) == 1) {
+            OperationLogService.insertLog(new OperationLog("删除了员工奖惩，id为："+id,1));
             return RespBean.ok("删除成功!");
         }
         return RespBean.error("删除失败!");
@@ -48,6 +52,7 @@ public class EmpEcController {
     @PutMapping("/")
     public RespBean updateEmpEcById(@RequestBody Employeeec employeeec) {
         if (empEcService.updateEmpEcById(employeeec) == 1) {
+            OperationLogService.insertLog(new OperationLog("修改了员工奖惩，id为："+employeeec.getId(),2));
             return RespBean.ok("更新成功!");
         }
         return RespBean.error("更新失败!");
@@ -56,6 +61,7 @@ public class EmpEcController {
     @DeleteMapping("/")
     public RespBean deleteEmpEcsByIds(Integer[] ids) {
         if (empEcService.deleteEmpEcsByIds(ids) == ids.length) {
+            OperationLogService.insertLog(new OperationLog("删除了员工奖惩，id为："+ids,2));
             return RespBean.ok("删除成功!");
         }
         return RespBean.error("删除失败!");

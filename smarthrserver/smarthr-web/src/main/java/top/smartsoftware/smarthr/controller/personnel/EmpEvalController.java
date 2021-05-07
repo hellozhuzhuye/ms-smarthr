@@ -7,6 +7,7 @@ import top.smartsoftware.smarthr.model.RespBean;
 import top.smartsoftware.smarthr.model.entity.EmployeeEvaluation;
 import top.smartsoftware.smarthr.model.vo.EmployeeEvaluationVO;
 import top.smartsoftware.smarthr.service.EmpEvalService;
+import top.smartsoftware.smarthr.service.OperationLogService;
 
 /**
  * @Description
@@ -30,6 +31,7 @@ public class EmpEvalController {
     public RespBean addEmpEval(@RequestBody EmployeeEvaluation employeeEvaluation) {
 
         if (empEvalService.addEmpEval(employeeEvaluation) == 1) {
+            OperationLogService.insertInsertLog("员工考评："+employeeEvaluation.getContent());
             return RespBean.ok("添加成功!");
         }
         return RespBean.error("添加失败!");
@@ -38,6 +40,7 @@ public class EmpEvalController {
     @DeleteMapping("/{id}")
     public RespBean deleteEmpEvalById(@PathVariable Integer id) {
         if (empEvalService.deleteEmpEvalById(id) == 1) {
+            OperationLogService.insertDeleteLog("员工考评,id为："+id);
             return RespBean.ok("删除成功!");
         }
         return RespBean.error("删除失败!");
@@ -46,6 +49,7 @@ public class EmpEvalController {
     @PutMapping("/")
     public RespBean updateEmpEvalById(@RequestBody EmployeeEvaluation employeeEvaluation) {
         if (empEvalService.updateEmpEvalById(employeeEvaluation) == 1) {
+            OperationLogService.insertDeleteLog("员工考评,id为："+employeeEvaluation.getId());
             return RespBean.ok("更新成功!");
         }
         return RespBean.error("更新失败!");

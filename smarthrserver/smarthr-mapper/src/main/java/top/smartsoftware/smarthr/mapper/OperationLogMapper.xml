@@ -3,12 +3,13 @@
 <mapper namespace="top.smartsoftware.smarthr.mapper.OperationLogMapper" >
   <resultMap id="BaseResultMap" type="top.smartsoftware.smarthr.model.OperationLog" >
     <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="addDate" property="addDate" jdbcType="DATE" />
+    <result column="addDate" property="addDate" jdbcType="TIMESTAMP" />
     <result column="operate" property="operate" jdbcType="VARCHAR" />
     <result column="hrid" property="hrid" jdbcType="INTEGER" />
+    <result column="type" property="type" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, addDate, operate, hrid
+    id, addDate, operate, hrid, type
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -16,15 +17,46 @@
     from operation_log
     where id = #{id,jdbcType=INTEGER}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    <select id="getAllLog" parameterType="top.smartsoftware.smarthr.model.OperationLogBO" resultMap="OperationLogVOMap">
+    SELECT
+        ol.*,
+        hr.username,
+        hr.`name`
+    FROM
+        operation_log ol
+        LEFT JOIN hr ON ol.hrid = hr.id
+    WHERE 1=1
+      <if test="name!=null">
+        AND hr.name like concat('%',#{name},'%')
+      </if>
+      <if test="type!=null">
+        AND ol.type = #{type}
+      </if>
+      <if test="startTime!=null">
+        AND ol.addDate >= #{startTime}
+      </if>
+      <if test="endTime!=null">
+        AND ol.addDate &lt;= #{endTime}
+      </if>
+    </select>
+    <resultMap id="OperationLogVOMap" type="top.smartsoftware.smarthr.model.vo.OperationLogVO">
+      <id column="id" property="id" jdbcType="INTEGER" />
+      <result column="addDate" property="addDate" jdbcType="TIMESTAMP" />
+      <result column="operate" property="operate" jdbcType="VARCHAR" />
+      <result column="hrid" property="hrid" jdbcType="INTEGER" />
+      <result column="username" property="username" jdbcType="VARCHAR" />
+      <result column="name" property="name" jdbcType="VARCHAR" />
+      <result column="type" property="type" jdbcType="INTEGER" />
+    </resultMap>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from operation_log
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="top.smartsoftware.smarthr.model.OperationLog" >
     insert into operation_log (id, addDate, operate, 
-      hrid)
-    values (#{id,jdbcType=INTEGER}, #{addDate,jdbcType=DATE}, #{operate,jdbcType=VARCHAR}, 
-      #{hrid,jdbcType=INTEGER})
+      hrid,type)
+    values (#{id,jdbcType=INTEGER}, #{addDate,jdbcType=TIMESTAMP}, #{operate,jdbcType=VARCHAR},
+      #{hrid,jdbcType=INTEGER},#{type,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="top.smartsoftware.smarthr.model.OperationLog" >
     insert into operation_log
@@ -41,13 +73,16 @@
       <if test="hrid != null" >
         hrid,
       </if>
+      <if test="type != null" >
+        type,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
         #{id,jdbcType=INTEGER},
       </if>
       <if test="addDate != null" >
-        #{addDate,jdbcType=DATE},
+        #{addDate,jdbcType=TIMESTAMP},
       </if>
       <if test="operate != null" >
         #{operate,jdbcType=VARCHAR},
@@ -55,13 +90,16 @@
       <if test="hrid != null" >
         #{hrid,jdbcType=INTEGER},
       </if>
+      <if test="type != null" >
+        #{type,jdbcType=INTEGER},
+      </if>
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="top.smartsoftware.smarthr.model.OperationLog" >
     update operation_log
     <set >
       <if test="addDate != null" >
-        addDate = #{addDate,jdbcType=DATE},
+        addDate = #{addDate,jdbcType=TIMESTAMP},
       </if>
       <if test="operate != null" >
         operate = #{operate,jdbcType=VARCHAR},
@@ -69,14 +107,18 @@
       <if test="hrid != null" >
         hrid = #{hrid,jdbcType=INTEGER},
       </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=INTEGER},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="top.smartsoftware.smarthr.model.OperationLog" >
     update operation_log
-    set addDate = #{addDate,jdbcType=DATE},
+    set addDate = #{addDate,jdbcType=TIMESTAMP},
       operate = #{operate,jdbcType=VARCHAR},
-      hrid = #{hrid,jdbcType=INTEGER}
+      hrid = #{hrid,jdbcType=INTEGER},
+      type = #{type,jdbcType=INTEGER},
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

@@ -5,7 +5,9 @@ import org.springframework.web.bind.annotation.*;
 import top.smartsoftware.smarthr.service.JobLevelService;
 import top.smartsoftware.smarthr.model.JobLevel;
 import top.smartsoftware.smarthr.model.RespBean;
+import top.smartsoftware.smarthr.service.OperationLogService;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -27,6 +29,7 @@ public class JobLevelController {
     @PostMapping("/")
     public RespBean addJobLevel(@RequestBody JobLevel jobLevel) {
         if (jobLevelService.addJobLevel(jobLevel) == 1) {
+            OperationLogService.insertInsertLog("职称:"+jobLevel.getName());
             return RespBean.ok("添加成功!");
         }
         return RespBean.error("添加失败!");
@@ -35,6 +38,7 @@ public class JobLevelController {
     @PutMapping("/")
     public RespBean updateJobLevelById(@RequestBody JobLevel jobLevel) {
         if (jobLevelService.updateJobLevelById(jobLevel) == 1) {
+            OperationLogService.insertUpdateLog("职称:"+jobLevel.getName());
             return RespBean.ok("更新成功!");
         }
         return RespBean.error("更新失败!");
@@ -43,6 +47,7 @@ public class JobLevelController {
     @DeleteMapping("/{id}")
     public RespBean deleteJobLevelById(@PathVariable Integer id) {
         if (jobLevelService.deleteJobLevelById(id) == 1) {
+            OperationLogService.insertDeleteLog("职称:"+id);
             return RespBean.ok("删除成功!");
         }
         return RespBean.error("删除失败!");
@@ -51,6 +56,7 @@ public class JobLevelController {
     @DeleteMapping("/")
     public RespBean deleteJobLevelsByIds(Integer[] ids) {
         if (jobLevelService.deleteJobLevelsByIds(ids) == ids.length) {
+            OperationLogService.insertDeleteLog("职称:"+ Arrays.toString(ids));
             return RespBean.ok("删除成功!");
         }
         return RespBean.error("删除失败!");

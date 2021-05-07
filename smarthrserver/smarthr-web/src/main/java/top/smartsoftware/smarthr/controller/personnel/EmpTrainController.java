@@ -7,6 +7,7 @@ import top.smartsoftware.smarthr.model.EmployeeTrain;
 import top.smartsoftware.smarthr.model.RespBean;
 import top.smartsoftware.smarthr.model.vo.EmployeeTrainVO;
 import top.smartsoftware.smarthr.service.EmpTrainService;
+import top.smartsoftware.smarthr.service.OperationLogService;
 
 
 /**
@@ -31,12 +32,14 @@ public class EmpTrainController {
     @PostMapping("/")
     public RespBean addEmpTrain(@RequestBody EmployeeTrain employeeTrain){
         empTrainService.addEmpTrain(employeeTrain);
+        OperationLogService.insertInsertLog("员工培训："+employeeTrain.getTrainContent());
         return RespBean.ok("添加成功");
     }
 
     @DeleteMapping("/{id}")
     public RespBean deleteEmpTrain(@PathVariable Integer id) {
         if (empTrainService.deleteEmpTrainByEid(id) == 1) {
+            OperationLogService.insertDeleteLog("员工培训,id为"+id);
             return RespBean.ok("删除成功!");
         }
         return RespBean.error("删除失败!");
@@ -45,6 +48,7 @@ public class EmpTrainController {
     @PutMapping("/")
     public RespBean updateEmpTrain(@RequestBody EmployeeTrain employeeTrain) {
         if (empTrainService.updateEmpTrain(employeeTrain) == 1) {
+            OperationLogService.insertUpdateLog("员工培训,id为"+employeeTrain.getId());
             return RespBean.ok("更新成功!");
         }
         return RespBean.error("更新失败!");

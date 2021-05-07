@@ -41,6 +41,7 @@ public class EmpBasicController {
     @PostMapping("/")
     public RespBean addEmp(@RequestBody Employee employee) {
         if (employeeService.addEmp(employee) == 1) {
+            OperationLogService.insertLog(new OperationLog("添加了员工："+employee.getName(),0));
             return RespBean.ok("添加成功!");
         }
         return RespBean.error("添加失败!");
@@ -49,6 +50,7 @@ public class EmpBasicController {
     @DeleteMapping("/{id}")
     public RespBean deleteEmpByEid(@PathVariable Integer id) {
         if (employeeService.deleteEmpByEid(id) == 1) {
+            OperationLogService.insertLog(new OperationLog("删除了员工ID为："+id,1));
             return RespBean.ok("删除成功!");
         }
         return RespBean.error("删除失败!");
@@ -57,6 +59,7 @@ public class EmpBasicController {
     @PutMapping("/")
     public RespBean updateEmp(@RequestBody Employee employee) {
         if (employeeService.updateEmp(employee) == 1) {
+            OperationLogService.insertLog(new OperationLog("更改了了员工ID为："+employee.getName(),2));
             return RespBean.ok("更新成功!");
         }
         return RespBean.error("更新失败!");
@@ -97,6 +100,7 @@ public class EmpBasicController {
     @GetMapping("/export")
     public ResponseEntity<byte[]> exportData() {
         List<Employee> list = (List<Employee>) employeeService.getEmployeeByPage(null, null, new Employee(),null).getData();
+        OperationLogService.insertLog(new OperationLog("导出了员工资料",3));
         return POIUtils.employee2Excel(list);
     }
 
@@ -104,6 +108,7 @@ public class EmpBasicController {
     public RespBean importData(MultipartFile file) throws IOException {
         List<Employee> list = POIUtils.excel2Employee(file, nationService.getAllNations(), politicsstatusService.getAllPoliticsstatus(), departmentService.getAllDepartmentsWithOutChildren(), positionService.getAllPositions(), jobLevelService.getAllJobLevels());
         if (employeeService.addEmps(list) == list.size()) {
+            OperationLogService.insertLog(new OperationLog("导入了员工资料",0));
             return RespBean.ok("上传成功");
         }
         return RespBean.error("上传失败");

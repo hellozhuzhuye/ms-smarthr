@@ -8,6 +8,7 @@ import top.smartsoftware.smarthr.model.EmployeeTrain;
 import top.smartsoftware.smarthr.model.RespBean;
 import top.smartsoftware.smarthr.model.vo.EmployeeRemoveVO;
 import top.smartsoftware.smarthr.service.EmpRemoveService;
+import top.smartsoftware.smarthr.service.OperationLogService;
 
 import java.util.List;
 
@@ -33,6 +34,7 @@ public class EmpRemoveController {
     @PutMapping("/")
     public RespBean updateEmpRemove(@RequestBody EmployeeRemove employeeRemove) {
         if (empRemoveService.updateEmpRemove(employeeRemove) == 1) {
+            OperationLogService.insertUpdateLog("员工调动:"+employeeRemove);
             return RespBean.ok("更新成功!");
         }
         return RespBean.error("更新失败!");
