@@ -65,8 +65,8 @@ public class WorkFlowService {
         return 1;
     }
 
-    public List<MyApplyVO> getMyApply(Integer eid) {
-        List<MyApplyVO> myApplyVOS = workFlowMapper.queryMyApply(eid);
+    public List<MyApplyVO> getMyApply(Integer eid,Integer workFlowTypeId) {
+        List<MyApplyVO> myApplyVOS = workFlowMapper.queryMyApply(eid,workFlowTypeId);
         myApplyVOS.forEach(e -> {
             String[] split = e.getHrid().split(",");
             StringBuilder hrNames = new StringBuilder();

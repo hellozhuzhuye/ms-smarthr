@@ -5,8 +5,8 @@
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="eid" property="eid" jdbcType="INTEGER" />
     <result column="asDate" property="asDate" jdbcType="DATE" />
-    <result column="beforeSalary" property="beforeSalary" jdbcType="INTEGER" />
-    <result column="afterSalary" property="afterSalary" jdbcType="INTEGER" />
+    <result column="beforeSalary" property="beforeSalary" jdbcType="DOUBLE" />
+    <result column="afterSalary" property="afterSalary" jdbcType="DOUBLE" />
     <result column="reason" property="reason" jdbcType="VARCHAR" />
     <result column="remark" property="remark" jdbcType="VARCHAR" />
   </resultMap>
@@ -19,6 +19,18 @@
     from adjust_salary
     where id = #{id,jdbcType=INTEGER}
   </select>
+  <select id="getSalaryAccount" resultType="top.smartsoftware.smarthr.model.vo.AdjustSalaryVO">
+  SELECT
+      e.NAME as ename,
+      adj.*
+  FROM
+      adjust_salary adj
+      LEFT JOIN employee e ON adj.eid = e.id
+  WHERE 1=1
+  <if test="ename != null">
+    AND e.name like concat('%',#{ename},'%')
+  </if>
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from adjust_salary
     where id = #{id,jdbcType=INTEGER}
@@ -28,7 +40,7 @@
       beforeSalary, afterSalary, reason, 
       remark)
     values (#{id,jdbcType=INTEGER}, #{eid,jdbcType=INTEGER}, #{asDate,jdbcType=DATE}, 
-      #{beforeSalary,jdbcType=INTEGER}, #{afterSalary,jdbcType=INTEGER}, #{reason,jdbcType=VARCHAR}, 
+      #{beforeSalary,jdbcType=DOUBLE}, #{afterSalary,jdbcType=DOUBLE}, #{reason,jdbcType=VARCHAR},
       #{remark,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="top.smartsoftware.smarthr.model.AdjustSalary" >
@@ -67,10 +79,10 @@
         #{asDate,jdbcType=DATE},
       </if>
       <if test="beforeSalary != null" >
-        #{beforeSalary,jdbcType=INTEGER},
+        #{beforeSalary,jdbcType=DOUBLE},
       </if>
       <if test="afterSalary != null" >
-        #{afterSalary,jdbcType=INTEGER},
+        #{afterSalary,jdbcType=DOUBLE},
       </if>
       <if test="reason != null" >
         #{reason,jdbcType=VARCHAR},
@@ -90,10 +102,10 @@
         asDate = #{asDate,jdbcType=DATE},
       </if>
       <if test="beforeSalary != null" >
-        beforeSalary = #{beforeSalary,jdbcType=INTEGER},
+        beforeSalary = #{beforeSalary,jdbcType=DOUBLE},
       </if>
       <if test="afterSalary != null" >
-        afterSalary = #{afterSalary,jdbcType=INTEGER},
+        afterSalary = #{afterSalary,jdbcType=DOUBLE},
       </if>
       <if test="reason != null" >
         reason = #{reason,jdbcType=VARCHAR},
@@ -108,8 +120,8 @@
     update adjust_salary
     set eid = #{eid,jdbcType=INTEGER},
       asDate = #{asDate,jdbcType=DATE},
-      beforeSalary = #{beforeSalary,jdbcType=INTEGER},
-      afterSalary = #{afterSalary,jdbcType=INTEGER},
+      beforeSalary = #{beforeSalary,jdbcType=DOUBLE},
+      afterSalary = #{afterSalary,jdbcType=DOUBLE},
       reason = #{reason,jdbcType=VARCHAR},
       remark = #{remark,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}

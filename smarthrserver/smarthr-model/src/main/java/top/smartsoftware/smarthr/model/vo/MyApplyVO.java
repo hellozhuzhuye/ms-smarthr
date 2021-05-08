@@ -10,6 +10,7 @@ import top.smartsoftware.smarthr.model.entity.WorkFlow;
  */
 @Data
 public class MyApplyVO extends WorkFlow {
+    private String name;
     private String applyTypeName;
     private String hrNames;
 }

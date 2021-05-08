@@ -9,7 +9,7 @@ import java.util.Date;
 public class OperationLog {
     private Integer id;
 
-    @JsonFormat(timezone = "GMT+8")
+    @JsonFormat(timezone = "GMT+8",pattern = "yyyy-MM-dd HH:mm:ss")
     private Date addDate;
 
     private String operate;

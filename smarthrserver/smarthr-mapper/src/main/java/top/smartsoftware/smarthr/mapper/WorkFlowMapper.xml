@@ -16,15 +16,25 @@
     <select id="queryMyApply" resultType="top.smartsoftware.smarthr.model.vo.MyApplyVO">
     SELECT
         wf.id,
+        hr.name,
         wft.typeName as applyTypeName,
         wf.content,
+        wf.selectDateTime,
         wf.hrid,
         wf.createTime
     FROM
         `work_flow` wf
         LEFT JOIN work_flow_type wft ON wf.workFlowTypeId = wft.id
+        LEFT JOIN hr ON wf.eid = hr.id
     WHERE
-        eid =#{eid}
+    1=1
+        <if test="eid!=null">
+            AND wf.eid =#{eid}
+        </if>
+        <if test="workFlowTypeId!=null">
+            AND wf.workFlowTypeId =#{workFlowTypeId}
+        </if>
+
     </select>
 
 </mapper>

@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.smartsoftware.smarthr.mapper.EmployeeAccountMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="top.smartsoftware.smarthr.model.entity.EmployeeAccount">
+        <id column="id" property="id" />
+        <result column="eid" property="eid" />
+        <result column="sid" property="sid" />
+        <result column="achievement" property="achievement" />
+        <result column="performance" property="performance" />
+        <result column="netSalary" property="netSalary" />
+        <result column="attendanceDeduction" property="attendanceDeduction" />
+        <result column="currentMonth" property="currentMonth" />
+        <result column="createTime" property="createTime" />
+        <result column="updateTime" property="updateTime" />
+    </resultMap>
+    <select id="getSalaryAccount" parameterType="top.smartsoftware.smarthr.model.vo.EmpAccountVO" resultType="top.smartsoftware.smarthr.model.vo.EmpAccountVO">
+    SELECT
+        ea.id,
+        e.`name` AS ename,
+        s.NAME AS sname,
+        s.basicSalary,
+        s.lunchSalary,
+        s.trafficSalary,
+        ROUND(s.pensionBase*s.pensionPer,2) as pension,
+        ROUND(s.medicalBase*s.medicalPer,2) as medical,
+        ROUND(s.unemployBase*s.unemployBasePer,2) as unemploy,
+        ROUND(s.jobInjuryBase*s.jobInjuryPer,2) as jobInjury,
+        ROUND(s.birthBase*s.birthPer,2) as birth,
+        ROUND(s.accumulationFundBase*s.accumulationFundPer,2) as accumulationFund,
+        ea.achievement*ea.performance as bonus,
+        (SELECT
+        ROUND(s.basicSalary
+        + s.lunchSalary
+        + s.trafficSalary
+        + ea.achievement * ea.performance
+        - s.pensionBase * s.pensionPer
+        - s.medicalBase * s.medicalPer
+        - s.unemployBase * s.unemployBasePer
+        - s.jobInjuryBase * s.jobInjuryPer
+        - s.birthBase * s.birthPer
+        - s.accumulationFundBase * s.accumulationFundPer
+        - ea.attendanceDeduction,2)
+        FROM employee_account ea
+        LEFT JOIN salary s ON ea.sid = s.id)as netSalary,
+        ea.attendanceDeduction,
+        ea.currentMonth
+    FROM
+        employee_account ea
+        LEFT JOIN salary s ON ea.sid = s.id
+        LEFT JOIN employee e ON ea.eid = e.id
+    WHERE 1=1
+        <if test="ename !=null">
+           AND e.name like concat('%',#{ename},'%')
+        </if>
+        <if test="startTime !=null">
+            AND ea.currentMonth >= #{startTime}
+        </if>
+        <if test="endTime !=null">
+            AND ea.currentMonth &lt;= #{endTime}
+        </if>
+    </select>
+    <select id="getAccountDetail" resultType="top.smartsoftware.smarthr.model.vo.EmpAccountVO">
+    SELECT
+        ea.id,
+        e.`name` AS ename,
+        s.NAME AS sname,
+        s.basicSalary,
+        s.lunchSalary,
+        s.trafficSalary,
+        ROUND(s.pensionBase*s.pensionPer,2) as pension,
+        ROUND(s.medicalBase*s.medicalPer,2) as medical,
+        ROUND(s.unemployBase*s.unemployBasePer,2) as unemploy,
+        ROUND(s.jobInjuryBase*s.jobInjuryPer,2) as jobInjury,
+        ROUND(s.birthBase*s.birthPer,2) as birth,
+        ROUND(s.accumulationFundBase*s.accumulationFundPer,2) as accumulationFund,
+        ea.achievement*ea.performance as bonus,
+        (SELECT
+        ROUND(s.basicSalary
+        + s.lunchSalary
+        + s.trafficSalary
+        + ea.achievement * ea.performance
+        - s.pensionBase * s.pensionPer
+        - s.medicalBase * s.medicalPer
+        - s.unemployBase * s.unemployBasePer
+        - s.jobInjuryBase * s.jobInjuryPer
+        - s.birthBase * s.birthPer
+        - s.accumulationFundBase * s.accumulationFundPer
+        - ea.attendanceDeduction,2)
+        FROM employee_account ea
+        LEFT JOIN salary s ON ea.sid = s.id)as netSalary,
+        ea.attendanceDeduction,
+        ea.currentMonth
+    FROM
+        employee_account ea
+        LEFT JOIN salary s ON ea.sid = s.id
+        LEFT JOIN employee e ON ea.eid = e.id
+    WHERE ea.id = #{id}
+    </select>
+
+</mapper>

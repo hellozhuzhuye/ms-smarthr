@@ -1,5 +1,7 @@
 package top.smartsoftware.smarthr.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.util.Date;
 
 public class AdjustSalary {
@@ -7,11 +9,12 @@ public class AdjustSalary {
 
     private Integer eid;
 
+    @JsonFormat(pattern = "yyyy-MM-dd",timezone = "Asia/Shanghai")
     private Date asDate;
 
-    private Integer beforeSalary;
+    private Double beforeSalary;
 
-    private Integer afterSalary;
+    private Double afterSalary;
 
     private String reason;
 
@@ -41,19 +44,19 @@ public class AdjustSalary {
         this.asDate = asDate;
     }
 
-    public Integer getBeforeSalary() {
+    public Double getBeforeSalary() {
         return beforeSalary;
     }
 
-    public void setBeforeSalary(Integer beforeSalary) {
+    public void setBeforeSalary(Double beforeSalary) {
         this.beforeSalary = beforeSalary;
     }
 
-    public Integer getAfterSalary() {
+    public Double getAfterSalary() {
         return afterSalary;
     }
 
-    public void setAfterSalary(Integer afterSalary) {
+    public void setAfterSalary(Double afterSalary) {
         this.afterSalary = afterSalary;
     }
 

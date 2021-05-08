@@ -48,7 +48,7 @@ public class WorkFlowController {
     @GetMapping("/my/")
     public List<MyApplyVO> getMyApply(Authentication authentication) {
         Hr hr = (Hr) authentication.getPrincipal();
-        return workFlowService.getMyApply(hr.getId());
+        return workFlowService.getMyApply(hr.getId(),null);
     }
 
     @GetMapping("/detail/{wfid}")
@@ -71,5 +71,9 @@ public class WorkFlowController {
         return RespBean.error("审批失败");
     }
 
+    @GetMapping("/empLeave")
+    public List<MyApplyVO> getEmpLeave(){
+        return workFlowService.getMyApply(null,3);
+    }
 
 }
