@@ -38,6 +38,7 @@ public class WorkFlowService {
 
     public int addWorkFlow(WorkFlow workFlow) throws ParseException {
         String date = workFlow.getSelectDateTime();
+        int dateDaySpace=0;
         if (workFlow.getWorkFlowTypeId() == 1 || workFlow.getWorkFlowTypeId() == 5 || workFlow.getWorkFlowTypeId() == 6) {
             date = date.replace("Z", " UTC");
             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS Z");
@@ -47,18 +48,27 @@ public class WorkFlowService {
             workFlow.setCreateTime(LocalDateTime.now());
         } else {
             String[] split = date.split(",");
-            Date start = DateTimeUtil.parse(split[0]);
-            Date end = DateTimeUtil.parse(split[1]);
+            Date start = DateTimeUtil.StringToDate(split[0]);
+            Date end = DateTimeUtil.StringToDate(split[1]);
+            dateDaySpace = DateTimeUtil.getDateDaySpace(end, start);
             String startStr = DateTimeUtil.format(start, "yyyy-MM-dd HH:mm:ss");
             String endStr = DateTimeUtil.format(end, "yyyy-MM-dd HH:mm:ss");
             workFlow.setSelectDateTime(startStr + "," + endStr);
         }
+        System.out.println(dateDaySpace);
+        workFlow.setCreateTime(LocalDateTime.now());
         workFlowMapper.insert(workFlow);
         WorkFlowStatus workFlowStatus = new WorkFlowStatus();
         workFlowStatus.setWfid(workFlow.getId());
         String hrids = workFlow.getHrid();
         String[] split = hrids.split(",");
+        int finalDateDaySpace = dateDaySpace;
         Arrays.stream(split).forEach(e -> {
+            if (finalDateDaySpace >3){
+                workFlowStatus.setStatus(2);
+                workFlowStatus.setApproveTime(LocalDateTime.now());
+                workFlowStatus.setContent("请假超过三天自动拒绝");
+            }
             workFlowStatus.setHrid(Integer.valueOf(e));
             workFlowStatusMapper.insert(workFlowStatus);
         });
@@ -74,5 +84,9 @@ public class WorkFlowService {
             e.setHrNames(hrNames.toString());
         });
         return myApplyVOS;
+    }
+
+    public static void main(String[] args) {
+
     }
 }

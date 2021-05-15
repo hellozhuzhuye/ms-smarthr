@@ -3,7 +3,7 @@ spring:
     type: com.alibaba.druid.pool.DruidDataSource
     username: root
     password: 74110asd123.
-    url: jdbc:mysql://47.112.105.123:3306/smarthr?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+    url: jdbc:mysql://127.0.0.1:3306/smarthr?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
   rabbitmq:
     username: guest
     password: guest
@@ -11,10 +11,10 @@ spring:
     publisher-returns: true
     publisher-confirm-type: correlated
   redis:
-    host: 47.112.105.123
+    host: 127.0.0.1
     database: 0
     port: 6379
-    password: 74110asd123.
+#    password: 74110asd123.
     timeout: 60s
     lettuce:
       cluster:

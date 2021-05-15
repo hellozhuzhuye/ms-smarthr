@@ -4,6 +4,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import top.smartsoftware.smarthr.mapper.AdjustSalaryMapper;
 import top.smartsoftware.smarthr.mapper.EmployeeAccountMapper;
 import top.smartsoftware.smarthr.model.vo.EmpAccountVO;
 
@@ -16,6 +17,8 @@ import top.smartsoftware.smarthr.model.vo.EmpAccountVO;
 public class SalaryAccountService {
     @Autowired
     EmployeeAccountMapper employeeAccountMapper;
+    @Autowired
+    AdjustSalaryMapper adjustSalaryMapper;
 
 
     public PageInfo<EmpAccountVO> getSalaryAccount(Integer pageNum, Integer pageSize,EmpAccountVO empAccountVO) {
@@ -27,4 +30,9 @@ public class SalaryAccountService {
     }
 
 
+    public String insertAccount(Integer eid) {
+        Double currAfterSalary = adjustSalaryMapper.getCurrAfterSalary(eid);
+        return null;
+
+    }
 }

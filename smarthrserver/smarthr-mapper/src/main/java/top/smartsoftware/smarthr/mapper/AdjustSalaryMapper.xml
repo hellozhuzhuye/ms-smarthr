@@ -31,7 +31,18 @@
     AND e.name like concat('%',#{ename},'%')
   </if>
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    <select id="getCurrAfterSalary" resultType="java.lang.Double">
+  SELECT
+      afterSalary
+  FROM
+      `adjust_salary`
+  WHERE
+      eid = #{eid}
+  ORDER BY
+      id DESC
+      LIMIT 1
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from adjust_salary
     where id = #{id,jdbcType=INTEGER}
   </delete>

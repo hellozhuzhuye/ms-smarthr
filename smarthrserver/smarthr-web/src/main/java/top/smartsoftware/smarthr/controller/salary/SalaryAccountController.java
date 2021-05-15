@@ -1,10 +1,7 @@
 package top.smartsoftware.smarthr.controller.salary;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import top.smartsoftware.smarthr.model.RespBean;
 import top.smartsoftware.smarthr.model.vo.EmpAccountVO;
 import top.smartsoftware.smarthr.service.SalaryAccountService;
@@ -28,6 +25,11 @@ public class SalaryAccountController {
     @GetMapping("/{id}")
     public RespBean getAccountDetail(@PathVariable String id){
         return RespBean.ok(salaryAccountService.getAccountDetail(Integer.valueOf(id)));
+    }
+
+    @PostMapping("/insertAccount")
+    public RespBean insertAccount(Integer eid){
+        return RespBean.ok(salaryAccountService.insertAccount(eid));
     }
 
 }

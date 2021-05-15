@@ -19,4 +19,6 @@ public interface AdjustSalaryMapper {
     int updateByPrimaryKey(AdjustSalary record);
 
     List<AdjustSalaryVO> getSalaryAccount(AdjustSalaryVO adjustSalaryVO);
+
+    Double getCurrAfterSalary(Integer eid);
 }
