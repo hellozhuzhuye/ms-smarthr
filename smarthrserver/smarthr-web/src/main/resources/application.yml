@@ -49,8 +49,8 @@ aliyun:
   oss:
     shenzhenEndpoint: oss-cn-shenzhen.aliyuncs.com # oss深圳对外服务的访问域名
     endpoint: oss.smartsoftware.top # oss cdn加速域名
-    accessKeyId: LTAI4GC3GWTFECczVmxmb1aA # 访问身份验证中用到用户标识
-    accessKeySecret: NkYLqwYScPJrnJ7IPFHX5MEeVHvfgi # 用户用于加密签名字符串和oss用来验证签名字符串的密钥
+    accessKeyId: LTAI4GC3GWTFECczVmxmb1aB # 访问身份验证中用到用户标识
+    accessKeySecret: NkYLqwYScPJrnJ7IPFHX5MEeVHvfgo # 用户用于加密签名字符串和oss用来验证签名字符串的密钥
     bucketName: 826076402 # oss的存储空间
     policy:
       expire: 300 # 签名有效期(S)
@@ -63,7 +63,7 @@ cloudmarket:
   ocr:
     appCode: db1a233f30294d4093afa7ce51b19440
     appKey: 203931139
-    appSecret: jp2PhssBxgYe0m4sihD69nkpgfXo1IIa
+    appSecret: jp2PhssBxgYe0m4sihD69nkpgfXo1IIb
     idCardUrl: https://dm-51.data.aliyun.com/rest/160601/ocr/ocr_idcard.json
     bankCardUrl: https://yhk.market.alicloudapi.com/rest/160601/ocr/ocr_bank_card.json
 mybatis-plus:
